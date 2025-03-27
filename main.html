@@ -204,6 +204,8 @@
       95% { clip: rect(27px, 9999px, 38px, 0); }
       100% { clip: rect(56px, 9999px, 41px, 0); }
     }
+
+    /* ... existing code ... */
   </style>
 </head>
 <body>
@@ -211,8 +213,8 @@
     <div class="logo">VIDEO GLITCHING</div>
     <div class="tabs">
       <a href="https://video-glitching-2.vercel.app/" class="tab">Home</a>
-      <a href="https://video-glitching-2.vercel.app/explanation.html" class="tab">Explanation</a>
-      <a href="https://video-glitching-2.vercel.app/license.html" class="tab">License</a>
+      <a href="https://video-glitching-2.vercel.app/EXPLANATION.html" class="tab">Explanation</a>
+      <a href="https://video-glitching-2.vercel.app/LICENSE.html" class="tab">License</a>
     </div>
     <div class="right-space"></div>
   </div>
@@ -286,6 +288,52 @@
       <button id="voronoiBreak">Voronoi Break</button>
       <button id="electricNoise">Electric Noise</button>
       <button id="subatomicShuffle">Subatomic Shuffle</button>
+      <button id="rgbToYuv">RGB to YUV</button>
+      <button id="yuvToRgb">YUV to RGB</button>
+      <button id="cumulativeMath">Cumulative Math</button>
+      <button id="literalSort">Literal Sort</button>
+      <button id="lowPass">Low Pass</button>
+      <button id="lumiSort">Lumi Sort</button>
+      <button id="qamFault">QAM Fault</button>
+      <button id="threeDDisplace">3D Displace</button>
+      <button id="codeBlock">Code Block</button>
+      <button id="tvNoise">TV Noise</button>
+      <button id="vhsTape">VHS Tape</button>
+      <button id="dataCorruption">Data Corruption</button>
+      <button id="signalJammer">Signal Jammer</button>
+      <button id="crtEffect">CRT Effect</button>
+      <button id="filmGrain">Film Grain</button>
+      <button id="oldMovie">Old Movie</button>
+      <button id="fractalize">Fractalize</button>
+      <button id="bloomEffect">Bloom Effect</button>
+      <button id="deepfry">Deepfry</button>
+      <button id="infrared">Infrared</button>
+      <button id="nightVision">Night Vision</button>
+      <button id="thermographics">Thermographics</button>
+      <button id="radioWaves">Radio Waves</button>
+      <button id="xray">X-Ray</button>
+      <button id="vaporwave">Vaporwave</button>
+      <button id="cyberpunk">Cyberpunk</button>
+      <button id="glitchCore">Glitch Core</button>
+      <button id="recursion">Recursion</button>
+      <button id="pixelation3D">3D Pixelation</button>
+      <button id="timeWarp">Time Warp</button>
+      <button id="fourthDimension">Fourth Dimension</button>
+      <button id="dataBending">Data Bending</button>
+      <button id="circuitBreak">Circuit Break</button>
+      <button id="machineCode">Machine Code</button>
+      <button id="artifactGeneration">Artifact Generation</button>
+      <button id="quantumEntanglement">Quantum Entanglement</button>
+      <button id="matrixRain">Matrix Rain</button>
+      <button id="hologramGlitch">Hologram Glitch</button>
+      <button id="sinWave">Sin Wave</button>
+      <button id="cosWave">Cos Wave</button>
+      <button id="tanWave">Tan Wave</button>
+      <button id="byteShift">Byte Shift</button>
+      <button id="harmonicDistortion">Harmonic Distortion</button>
+      <button id="cellularShift">Cellular Shift</button>
+      <button id="digitalDecay">Digital Decay</button>
+      <button id="fractalMosaic">Fractal Mosaic</button>
     </div>
 
     <div class="slider-container">
@@ -339,6 +387,8 @@
         <button id="downloadSourceButton">Download Source</button>
       </div>
     </div>
+
+    <!-- Download Source Modal -->
     <div id="downloadModal">
       <div class="modal-content">
         <h2>Video Source</h2>
@@ -399,10 +449,14 @@ function initAudio() {
   bassTrebleNode = audioContext.createBiquadFilter();
   trebleNode = audioContext.createBiquadFilter();
   staticNode = audioContext.createGain();
+  
+  // Create reverb node
   reverbNode = audioContext.createConvolver();
   createReverb().then(buffer => {
     reverbNode.buffer = buffer;
   });
+  
+  // Set up audio routing
   source.connect(distortionNode);
   distortionNode.connect(staticNode);
   staticNode.connect(reverbNode);
@@ -421,6 +475,8 @@ function initAudio() {
   bassTrebleNode.gain.value = 0;
   trebleNode.gain.value = 0;
 }
+
+// Add new function to create reverb impulse response
 async function createReverb() {
   const length = 2;
   const decay = 2.0;
@@ -507,11 +563,15 @@ function processFrame(timestamp) {
     offscreenCtx.drawImage(video, 0, 0, scaledWidth, scaledHeight);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(offscreenCanvas, 0, 0, canvas.width, canvas.height);
+    
+    // Store frame in buffer regardless of effects
     if (frameBuffer.length >= FRAME_BUFFER_SIZE) {
       frameBuffer.shift();
     }
     const frameData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     frameBuffer.push(frameData);
+
+    // Always get fresh image data for effects
     let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = imageData.data;
     const width = canvas.width;
@@ -524,6 +584,7 @@ function processFrame(timestamp) {
                             document.getElementById('brightness').value != 0;
 
     if (shouldApplyEffects) {
+      // Apply base transformations (row shift and display shift)
       if (rowShiftAmount !== 0 || displayShiftAmount !== 0) {
         for (let y = 0; y < height; y++) {
           for (let x = 0; x < width; x++) {
@@ -549,6 +610,8 @@ function processFrame(timestamp) {
           }
         }
       }
+
+      // Apply all active effects in sequence
       if (activeEffects.has('pixelate')) applyPixelate(imageData);
       if (activeEffects.has('videoCrush')) applyVideoCrush(imageData);
       if (activeEffects.has('shuffle')) applyPixelShuffle(imageData);
@@ -608,7 +671,57 @@ function processFrame(timestamp) {
       if (activeEffects.has('voronoiBreak')) applyVoronoiBreak(imageData);
       if (activeEffects.has('electricNoise')) applyElectricNoise(imageData);
       if (activeEffects.has('subatomicShuffle')) applySubatomicShuffle(imageData);
+      if (activeEffects.has('rgbToYuv')) applyRgbToYuv(imageData);
+      if (activeEffects.has('yuvToRgb')) applyYuvToRgb(imageData);
+      if (activeEffects.has('cumulativeMath')) applyCumulativeMath(imageData);
+      if (activeEffects.has('literalSort')) applyLiteralSort(imageData);
+      if (activeEffects.has('lowPass')) applyLowPass(imageData);
+      if (activeEffects.has('lumiSort')) applyLumiSort(imageData);
+      if (activeEffects.has('qamFault')) applyQamFault(imageData);
+      if (activeEffects.has('threeDDisplace')) applyThreeDDisplace(imageData);
+      if (activeEffects.has('codeBlock')) applyCodeBlock(imageData);
+      if (activeEffects.has('tvNoise')) applyTvNoise(imageData);
+      if (activeEffects.has('vhsTape')) applyVhsTape(imageData);
+      if (activeEffects.has('dataCorruption')) applyDataCorruption(imageData);
+      if (activeEffects.has('signalJammer')) applySignalJammer(imageData);
+      if (activeEffects.has('crtEffect')) applyCrtEffect(imageData);
+      if (activeEffects.has('filmGrain')) applyFilmGrain(imageData);
+      if (activeEffects.has('oldMovie')) applyOldMovie(imageData);
+      if (activeEffects.has('fractalize')) applyFractalize(imageData);
+      if (activeEffects.has('bloomEffect')) applyBloomEffect(imageData);
+      if (activeEffects.has('deepfry')) applyDeepfry(imageData);
+      if (activeEffects.has('infrared')) applyInfrared(imageData);
+      if (activeEffects.has('nightVision')) applyNightVision(imageData);
+      if (activeEffects.has('thermographics')) applyThermographics(imageData);
+      if (activeEffects.has('radioWaves')) applyRadioWaves(imageData);
+      if (activeEffects.has('xray')) applyXray(imageData);
+      if (activeEffects.has('vaporwave')) applyVaporwave(imageData);
+      if (activeEffects.has('cyberpunk')) applyCyberpunk(imageData);
+      if (activeEffects.has('glitchCore')) applyGlitchCore(imageData);
+      if (activeEffects.has('recursion')) applyRecursion(imageData);
+      if (activeEffects.has('pixelation3D')) applyPixelation3D(imageData);
+      if (activeEffects.has('timeWarp')) applyTimeWarp(imageData);
+      if (activeEffects.has('fourthDimension')) applyFourthDimension(imageData);
+      if (activeEffects.has('dataBending')) applyDataBending(imageData);
+      if (activeEffects.has('circuitBreak')) applyCircuitBreak(imageData);
+      if (activeEffects.has('machineCode')) applyMachineCode(imageData);
+      if (activeEffects.has('artifactGeneration')) applyArtifactGeneration(imageData);
+      if (activeEffects.has('quantumEntanglement')) applyQuantumEntanglement(imageData);
+      if (activeEffects.has('matrixRain')) applyMatrixRain(imageData);
+      if (activeEffects.has('hologramGlitch')) applyHologramGlitch(imageData);
+      if (activeEffects.has('sinWave')) applySinWave(imageData);
+      if (activeEffects.has('cosWave')) applyCosWave(imageData);
+      if (activeEffects.has('tanWave')) applyTanWave(imageData);
+      if (activeEffects.has('byteShift')) applyByteShift(imageData);
+      if (activeEffects.has('harmonicDistortion')) applyHarmonicDistortion(imageData);
+      if (activeEffects.has('cellularShift')) applyCellularShift(imageData);
+      if (activeEffects.has('digitalDecay')) applyDigitalDecay(imageData);
+      if (activeEffects.has('fractalMosaic')) applyFractalMosaic(imageData);
+
+      // Always apply brightness last
       applyBrightness(imageData);
+
+      // Put the modified image data back to the canvas
       ctx.putImageData(imageData, 0, 0);
     }
   }
@@ -617,10 +730,9 @@ function processFrame(timestamp) {
 
 function applyRGBSplit(imageData) {
   const data = imageData.data;
-  const dataCopy = new Uint8ClampedArray(data);
   for (let i = 0; i < data.length; i += 4) {
-    data[i] = dataCopy[i + 4] || dataCopy[i];
-    data[i + 2] = dataCopy[i - 4] || dataCopy[i + 2];
+    data[i] = data[i + 4] || data[i];
+    data[i + 2] = data[i - 4] || data[i + 2];
   }
 }
 
@@ -736,6 +848,7 @@ function applyRainbow(imageData) {
   const width = canvas.width;
   const height = canvas.height;
   const time = Date.now() * 0.001;
+  
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const idx = (y * width + x) * 4;
@@ -812,6 +925,7 @@ function applyRowShift(imageData) {
       const sourceX = (x + shift + width) % width;
       const idx = (y * width + x) * 4;
       const sourceIdx = (y * width + sourceX) * 4;
+      
       data[idx] = tempData[sourceIdx];
       data[idx + 1] = tempData[sourceIdx + 1];
       data[idx + 2] = tempData[sourceIdx + 2];
@@ -831,6 +945,7 @@ function applyDisplayShift(imageData) {
       const sourceX = (x + shift + width) % width;
       const idx = (y * width + x) * 4;
       const sourceIdx = (y * width + sourceX) * 4;
+      
       data[idx] = tempData[sourceIdx];
       data[idx + 1] = tempData[sourceIdx + 1];
       data[idx + 2] = tempData[sourceIdx + 2];
@@ -841,18 +956,31 @@ function applyDisplayShift(imageData) {
 
 function applyFrameRandomizer(imageData) {
   if (frameBuffer.length === 0) return;
+  
   const data = imageData.data;
   const width = canvas.width;
   const height = canvas.height;
-  const randomFrameIndex = Math.floor(Math.random() * frameBuffer.length);
-  const randomFrame = frameBuffer[randomFrameIndex];
-  const randomData = randomFrame.data;
-  for (let i = 0; i < data.length; i += 4) {
-    if (Math.random() < 0.3) {
-      data[i] = randomData[i];
-      data[i + 1] = randomData[i + 1];
-      data[i + 2] = randomData[i + 2];
-      data[i + 3] = randomData[i + 3];
+  
+  // Create time slices
+  const slices = 10;
+  const sliceHeight = height / slices;
+  
+  for (let i = 0; i < slices; i++) {
+    const frameIndex = Math.floor(Math.random() * frameBuffer.length);
+    const pastFrame = frameBuffer[frameIndex];
+    
+    const startY = Math.floor(i * sliceHeight);
+    const endY = Math.floor((i + 1) * sliceHeight);
+    
+    for (let y = startY; y < endY; y++) {
+      for (let x = 0; x < width; x++) {
+        const idx = (y * width + x) * 4;
+        if (Math.random() < 0.3) { 
+          data[idx] = pastFrame.data[idx];
+          data[idx + 1] = pastFrame.data[idx + 1];
+          data[idx + 2] = pastFrame.data[idx + 2];
+        }
+      }
     }
   }
 }
@@ -885,14 +1013,20 @@ function applyMotionTrail(imageData) {
     );
     return;
   }
+
+  // Add current frame to trail buffer
   motionTrailFrames.unshift(new ImageData(
     new Uint8ClampedArray(imageData.data),
     imageData.width,
     imageData.height
   ));
+
+  // Keep only TRAIL_LENGTH frames
   if (motionTrailFrames.length > TRAIL_LENGTH) {
     motionTrailFrames.pop();
   }
+
+  // Blend all frames with decreasing opacity
   const data = imageData.data;
   const width = imageData.width;
   const height = imageData.height;
@@ -907,6 +1041,8 @@ function applyMotionTrail(imageData) {
         const diff = Math.abs(data[idx] - trailFrame.data[idx]) +
                     Math.abs(data[idx + 1] - trailFrame.data[idx + 1]) +
                     Math.abs(data[idx + 2] - trailFrame.data[idx + 2]);
+
+        // Only blend pixels that have significant movement
         if (diff > 30) {
           data[idx] = data[idx] * (1 - opacity) + trailFrame.data[idx] * opacity;
           data[idx + 1] = data[idx + 1] * (1 - opacity) + trailFrame.data[idx + 1] * opacity;
@@ -1015,6 +1151,7 @@ function applySignalCorruption(imageData) {
   const data = imageData.data;
   const width = imageData.width;
   const height = imageData.height;
+  
   for (let i = 0; i < 10; i++) {
     const blockHeight = Math.random() * 50;
     const startY = Math.floor(Math.random() * height);
@@ -1025,11 +1162,10 @@ function applySignalCorruption(imageData) {
         const sourceX = (x + shift + width) % width;
         const idx = (y * width + x) * 4;
         const sourceIdx = (y * width + sourceX) * 4;
-        if (Math.random() < 0.5) {
-          data[idx] = data[sourceIdx + (Math.floor(Math.random() * 3) * 1)];
-          data[idx + 1] = data[sourceIdx + (Math.floor(Math.random() * 3) * 1)];
-          data[idx + 2] = data[sourceIdx + (Math.floor(Math.random() * 3) * 1)];
-        }
+        
+        data[idx] = data[sourceIdx] * (Math.random() * 0.5 + 0.5);
+        data[idx + 1] = data[sourceIdx + 1] * (Math.random() * 0.5 + 0.5);
+        data[idx + 2] = data[sourceIdx + 2] * (Math.random() * 0.5 + 0.5);
       }
     }
   }
@@ -1039,6 +1175,7 @@ function applyDataMosh(imageData) {
   const data = imageData.data;
   const width = imageData.width;
   const height = imageData.height;
+  
   for (let i = 0; i < 5; i++) {
     const blockSize = Math.random() * 50 + 20;
     const x = Math.floor(Math.random() * (width - blockSize));
@@ -1046,8 +1183,8 @@ function applyDataMosh(imageData) {
     const offsetX = Math.floor(Math.random() * 100) - 50;
     const offsetY = Math.floor(Math.random() * 100) - 50;
     
-    for (let by = 0; by < blockSize; by++) {
-      for (let bx = 0; bx < blockSize; bx++) {
+    for (let by = 0; by < blockSize && y + by < height; by++) {
+      for (let bx = 0; bx < blockSize && x + bx < width; bx++) {
         const sourceX = Math.min(Math.max(x + bx + offsetX, 0), width - 1);
         const sourceY = Math.min(Math.max(y + by + offsetY, 0), height - 1);
         const targetX = x + bx;
@@ -1076,11 +1213,12 @@ function applyBlocksGlitch(imageData) {
   for (let i = 0; i < numBlocks; i++) {
     const x = Math.floor(Math.random() * (width - blockSize));
     const y = Math.floor(Math.random() * (height - blockSize));
+    
     const shiftX = Math.floor(Math.random() * 50) - 25;
     const shiftY = Math.floor(Math.random() * 50) - 25;
     
-    for (let by = 0; by < blockSize; by++) {
-      for (let bx = 0; bx < blockSize; bx++) {
+    for (let by = 0; by < blockSize && y + by < height; by++) {
+      for (let bx = 0; bx < blockSize && x + bx < width; bx++) {
         const sourceX = x + bx;
         const sourceY = y + by;
         const targetX = Math.min(Math.max(x + bx + shiftX, 0), width - 1);
@@ -1088,6 +1226,7 @@ function applyBlocksGlitch(imageData) {
         
         const sourceIdx = (sourceY * width + sourceX) * 4;
         const targetIdx = (targetY * width + targetX) * 4;
+        
         data[targetIdx] = data[sourceIdx] * (Math.random() * 0.5 + 0.5);
         data[targetIdx + 1] = data[sourceIdx + 1] * (Math.random() * 0.5 + 0.5);
         data[targetIdx + 2] = data[sourceIdx + 2] * (Math.random() * 0.5 + 0.5);
@@ -1180,7 +1319,6 @@ function applyGhosting(imageData) {
 function applyChromaticAberration(imageData) {
   const data = imageData.data;
   const width = imageData.width;
-  const height = imageData.height;
   
   const rOffset = 5;
   const bOffset = -5;
@@ -1224,6 +1362,7 @@ function applyMirrorGlitch(imageData) {
   const data = imageData.data;
   const width = imageData.width;
   const height = imageData.height;
+  
   const mirrorPoints = Math.floor(Math.random() * 3) + 2;
   
   for (let i = 0; i < mirrorPoints; i++) {
@@ -1238,7 +1377,7 @@ function applyMirrorGlitch(imageData) {
         const sourceIdx = (sourceY * width + x) * 4;
         const targetIdx = (targetY * width + x) * 4;
         
-        if (Math.random() < 0.8) {
+        if (Math.random() < 0.8) { 
           data[targetIdx] = data[sourceIdx];
           data[targetIdx + 1] = data[sourceIdx + 1];
           data[targetIdx + 2] = data[sourceIdx + 2];
@@ -1254,24 +1393,18 @@ function applyTimeDisplacement(imageData) {
   const data = imageData.data;
   const width = imageData.width;
   const height = imageData.height;
-  const slices = 10;
-  const sliceHeight = height / slices;
+  const time = Date.now() * 0.001;
   
-  for (let i = 0; i < slices; i++) {
-    const frameIndex = Math.floor(Math.random() * frameBuffer.length);
-    const pastFrame = frameBuffer[frameIndex];
+  for (let y = 0; y < height; y++) {
+    const frameOffset = Math.floor(Math.random() * frameBuffer.length);
+    const pastFrame = frameBuffer[(frameBuffer.length + frameOffset) % frameBuffer.length];
     
-    const startY = Math.floor(i * sliceHeight);
-    const endY = Math.floor((i + 1) * sliceHeight);
-    
-    for (let y = startY; y < endY; y++) {
-      for (let x = 0; x < width; x++) {
-        const idx = (y * width + x) * 4;
-        if (Math.random() < 0.7) {
-          data[idx] = pastFrame.data[idx];
-          data[idx + 1] = pastFrame.data[idx + 1];
-          data[idx + 2] = pastFrame.data[idx + 2];
-        }
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      if (Math.random() < 0.5) {
+        data[idx] = pastFrame.data[idx];
+        data[idx + 1] = pastFrame.data[idx + 1];
+        data[idx + 2] = pastFrame.data[idx + 2];
       }
     }
   }
@@ -1281,20 +1414,25 @@ function applyPixelSort(imageData) {
   const data = imageData.data;
   const width = imageData.width;
   const height = imageData.height;
+  
   const numSegments = Math.floor(Math.random() * 5) + 3;
   
   for (let i = 0; i < numSegments; i++) {
     const startY = Math.floor(Math.random() * (height - 50));
     const segmentHeight = Math.floor(Math.random() * 50) + 20;
+    
     const pixels = [];
-    for (let y = startY; y < startY + segmentHeight && y < height; y++) {
+    
+    for (let y = startY; y < Math.min(startY + segmentHeight, height); y++) {
       for (let x = 0; x < width; x++) {
         const idx = (y * width + x) * 4;
         const brightness = (data[idx] + data[idx + 1] + data[idx + 2]) / 3;
         pixels.push({idx, brightness, color: [data[idx], data[idx + 1], data[idx + 2]]});
       }
     }
+    
     pixels.sort((a, b) => a.brightness - b.brightness);
+    
     pixels.forEach((pixel, index) => {
       const targetIdx = (Math.floor(index / width) + startY) * width * 4 + (index % width) * 4;
       data[targetIdx] = pixel.color[0];
@@ -1309,27 +1447,25 @@ function applyCompressionArtifacts(imageData) {
   const width = imageData.width;
   const height = imageData.height;
   
-  const blockSize = 8;
-  
+  const blockSize = 8; 
   for (let y = 0; y < height; y += blockSize) {
     for (let x = 0; x < width; x += blockSize) {
-      if (Math.random() < 0.3) {
-        let rSum = 0, gSum = 0, bSum = 0;
-        let count = 0;
+      if (Math.random() < 0.3) { 
+        let sumR = 0, sumG = 0, sumB = 0;
         
         for (let by = 0; by < blockSize && y + by < height; by++) {
           for (let bx = 0; bx < blockSize && x + bx < width; bx++) {
             const idx = ((y + by) * width + (x + bx)) * 4;
-            rSum += data[idx];
-            gSum += data[idx + 1];
-            bSum += data[idx + 2];
-            count++;
+            sumR += data[idx];
+            sumG += data[idx + 1];
+            sumB += data[idx + 2];
           }
         }
         
-        const rAvg = rSum / count;
-        const gAvg = gSum / count;
-        const bAvg = bSum / count;
+        const rAvg = sumR / (blockSize * blockSize);
+        const gAvg = sumG / (blockSize * blockSize);
+        const bAvg = sumB / (blockSize * blockSize);
+        
         for (let by = 0; by < blockSize && y + by < height; by++) {
           for (let bx = 0; bx < blockSize && x + bx < width; bx++) {
             const idx = ((y + by) * width + (x + bx)) * 4;
@@ -1360,9 +1496,10 @@ function applyGlitchWalk(imageData) {
         const sourceX = (x + Math.floor(offset) + width) % width;
         const idx = (y * width + x) * 4;
         const sourceIdx = (y * width + sourceX) * 4;
-        data[idx] = data[sourceIdx] * (1 + Math.random() * 0.5);
-        data[idx + 1] = data[sourceIdx + 1] * (1 + Math.random() * 0.5);
-        data[idx + 2] = data[sourceIdx + 2] * (1 + Math.random() * 0.5);
+        
+        data[idx] = data[idx] * (1 + Math.cos(sourceX * 0.01)) + data[sourceIdx] * (1 - Math.cos(sourceX * 0.01));
+        data[idx + 1] = data[idx + 1] * (1 + Math.sin(sourceX * 0.01)) + data[sourceIdx + 1] * (1 - Math.sin(sourceX * 0.01));
+        data[idx + 2] = data[idx + 2] * (1 + Math.tan(sourceX * 0.01)) + data[sourceIdx + 2] * (1 - Math.tan(sourceX * 0.01));
       }
     }
   }
@@ -1384,6 +1521,7 @@ function applyInterlace(imageData) {
         const sourceX = Math.floor(x + offset + width) % width;
         const idx = (y * width + x) * 4;
         const sourceIdx = (y * width + sourceX) * 4;
+        
         data[idx] = data[sourceIdx] * 1.2;
         data[idx + 1] = data[sourceIdx + 1] * 0.8;
         data[idx + 2] = data[sourceIdx + 2] * 0.8;
@@ -1407,6 +1545,7 @@ function applyPhosphorBurn(imageData) {
     window.phosphorBuffer[i] = Math.max(data[i], window.phosphorBuffer[i] * decay);
     window.phosphorBuffer[i + 1] = Math.max(data[i + 1], window.phosphorBuffer[i + 1] * decay);
     window.phosphorBuffer[i + 2] = Math.max(data[i + 2], window.phosphorBuffer[i + 2] * decay);
+    
     data[i] = window.phosphorBuffer[i];
     data[i + 1] = window.phosphorBuffer[i + 1];
     data[i + 2] = window.phosphorBuffer[i + 2];
@@ -1421,7 +1560,7 @@ function applyAnalogDrift(imageData) {
   
   for (let y = 0; y < height; y++) {
     const drift = Math.sin(y * 0.1 + time) * 10;
-    const wave = Math.sin(time * 2 + y * 0.1) * 5;
+    const wave = Math.cos(time * 2 + y * 0.1) * 5;
     
     for (let x = 0; x < width; x++) {
       const sourceX = Math.floor(x + drift + wave) % width;
@@ -1445,7 +1584,7 @@ function applyVHSTracking(imageData) {
   
   for (let y = 0; y < height; y++) {
     if (Math.random() < 0.05) {
-      const trackingHeight = Math.random() * 10;
+      const trackingHeight = Math.floor(Math.random() * 10) + 5;
       const offset = Math.random() * 20 - 10 + trackingOffset;
       
       for (let ty = y; ty < Math.min(y + trackingHeight, height); ty++) {
@@ -1600,7 +1739,7 @@ function applyTimeStretch(imageData) {
   const time = Date.now() * 0.001;
   
   for (let y = 0; y < height; y++) {
-    const frameOffset = Math.floor(Math.sin(y * 0.01 + time) * frameBuffer.length);
+    const frameOffset = Math.floor(Math.random() * frameBuffer.length);
     const pastFrame = frameBuffer[(frameBuffer.length + frameOffset) % frameBuffer.length];
     
     for (let x = 0; x < width; x++) {
@@ -1756,7 +1895,9 @@ function applyCellularAutomata(imageData) {
   for (let y = 1; y < height - 1; y++) {
     for (let x = 1; x < width - 1; x++) {
       const idx = (y * width + x) * 4;
+      
       let count = 0;
+      
       for (let ny = -1; ny <= 1; ny++) {
         for (let nx = -1; nx <= 1; nx++) {
           if (nx === 0 && ny === 0) continue;
@@ -1764,7 +1905,9 @@ function applyCellularAutomata(imageData) {
           if (tempData[nidx] > 127) count++;
         }
       }
-      if (tempData[idx] > 127) {
+      
+      const cell = tempData[idx] > 127;
+      if (cell) {
         if (count < 2 || count > 3) {
           data[idx] = data[idx] * 0.5;
           data[idx + 1] = data[idx + 1] * 0.5;
@@ -1790,22 +1933,23 @@ function applyEdgeDetection(imageData) {
   for (let y = 1; y < height - 1; y++) {
     for (let x = 1; x < width - 1; x++) {
       const idx = (y * width + x) * 4;
-      const idx_tl = ((y - 1) * width + (x - 1)) * 4;
-      const idx_t = ((y - 1) * width + x) * 4;
-      const idx_tr = ((y - 1) * width + (x + 1)) * 4;
-      const idx_l = (y * width + (x - 1)) * 4;
-      const idx_r = (y * width + (x + 1)) * 4;
-      const idx_bl = ((y + 1) * width + (x - 1)) * 4;
-      const idx_b = ((y + 1) * width + x) * 4;
-      const idx_br = ((y + 1) * width + (x + 1)) * 4;
       
-      const gx = -tempData[idx_tl] - 2 * tempData[idx_l] - tempData[idx_bl] + 
-                 tempData[idx_tr] + 2 * tempData[idx_r] + tempData[idx_br];
-      const gy = -tempData[idx_tl] - 2 * tempData[idx_t] - tempData[idx_tr] + 
-                 tempData[idx_bl] + 2 * tempData[idx_b] + tempData[idx_br];
+      const top = ((y - 1) * width + x) * 4;
+      const bottom = ((y + 1) * width + x) * 4;
+      const left = (y * width + (x - 1)) * 4;
+      const right = (y * width + (x + 1)) * 4;
       
-      const edge = Math.sqrt(gx * gx + gy * gy);
-      if (edge > 50) {
+      const edgeH = Math.abs(tempData[left] - tempData[right]) + 
+                   Math.abs(tempData[left + 1] - tempData[right + 1]) + 
+                   Math.abs(tempData[left + 2] - tempData[right + 2]);
+                   
+      const edgeV = Math.abs(tempData[top] - tempData[bottom]) + 
+                   Math.abs(tempData[top + 1] - tempData[bottom + 1]) + 
+                   Math.abs(tempData[top + 2] - tempData[bottom + 2]);
+      
+      const edge = (edgeH + edgeV) / 6;
+      
+      if (edge > 30) {
         data[idx] = 255 - data[idx];
         data[idx + 1] = 255 - data[idx + 1];
         data[idx + 2] = 255 - data[idx + 2];
@@ -1826,25 +1970,20 @@ function applyKaleidoscope(imageData) {
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const idx = (y * width + x) * 4;
+      
       const dx = x - centerX;
       const dy = y - centerY;
-      const radius = Math.sqrt(dx * dx + dy * dy);
-      let angle = Math.atan2(dy, dx);
-      angle = (angle + 2 * Math.PI) % (2 * Math.PI);
-      const segmentAngle = (2 * Math.PI) / segments;
-      const segmentNum = Math.floor(angle / segmentAngle);
-      let mappedAngle;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const angle = Math.atan2(dy, dx);
       
-      if (segmentNum % 2 === 0) {
-        mappedAngle = angle % segmentAngle;
-      } else {
-        mappedAngle = segmentAngle - (angle % segmentAngle);
-      }
-      const sourceX = Math.round(centerX + radius * Math.cos(mappedAngle));
-      const sourceY = Math.round(centerY + radius * Math.sin(mappedAngle));
+      const angleShift = angle % (2 * Math.PI / segments);
+      const mappedAngle = angleShift + (2 * Math.PI / segments);
       
-      if (sourceX >= 0 && sourceX < width && sourceY >= 0 && sourceY < height) {
-        const sourceIdx = (sourceY * width + sourceX) * 4;
+      const newX = Math.floor(centerX + Math.cos(mappedAngle) * dist);
+      const newY = Math.floor(centerY + Math.sin(mappedAngle) * dist);
+      
+      if (newX >= 0 && newX < width && newY >= 0 && newY < height) {
+        const sourceIdx = (newY * width + newX) * 4;
         data[idx] = tempData[sourceIdx];
         data[idx + 1] = tempData[sourceIdx + 1];
         data[idx + 2] = tempData[sourceIdx + 2];
@@ -1866,6 +2005,7 @@ function applyOilPainting(imageData) {
       const idx = (y * width + x) * 4;
       
       const buckets = Array(intensity).fill().map(() => ({r: 0, g: 0, b: 0, count: 0}));
+      
       for (let ky = -radius; ky <= radius; ky++) {
         for (let kx = -radius; kx <= radius; kx++) {
           const nx = x + kx;
@@ -1876,8 +2016,8 @@ function applyOilPainting(imageData) {
             const r = tempData[nidx];
             const g = tempData[nidx + 1];
             const b = tempData[nidx + 2];
-            const avg = (r + g + b) / 3;
-            const bucketIdx = Math.floor(avg / 256 * intensity);
+            
+            const bucketIdx = Math.floor((r + g + b) / (3 * 255) * intensity);
             buckets[bucketIdx].r += r;
             buckets[bucketIdx].g += g;
             buckets[bucketIdx].b += b;
@@ -1885,20 +2025,13 @@ function applyOilPainting(imageData) {
           }
         }
       }
-      let maxBucket = 0;
-      let maxCount = 0;
-      for (let i = 0; i < buckets.length; i++) {
-        if (buckets[i].count > maxCount) {
-          maxBucket = i;
-          maxCount = buckets[i].count;
-        }
-      }
       
-      if (maxCount > 0) {
-        data[idx] = buckets[maxBucket].r / maxCount;
-        data[idx + 1] = buckets[maxBucket].g / maxCount;
-        data[idx + 2] = buckets[maxBucket].b / maxCount;
-      }
+      const maxBucket = Math.max(...buckets.map(b => b.count));
+      const maxBucketIdx = buckets.findIndex(b => b.count === maxBucket);
+      
+      data[idx] = buckets[maxBucketIdx].r / maxBucketIdx;
+      data[idx + 1] = buckets[maxBucketIdx].g / maxBucketIdx;
+      data[idx + 2] = buckets[maxBucketIdx].b / maxBucketIdx;
     }
   }
 }
@@ -1915,9 +2048,11 @@ function applyPixelBleed(imageData) {
     
     for (let x = 0; x < width; x++) {
       const idx = (y * width + x) * 4;
-      if (Math.random() < 0.2) {
+      
+      if (Math.random() < 0.2) { 
         const sourceX = Math.min(Math.max(x + bleedDirection * bleedAmount, 0), width - 1);
         const sourceIdx = (y * width + sourceX) * 4;
+        
         data[idx] = (data[idx] * 0.5 + data[sourceIdx] * 0.5);
         data[idx + 1] = (data[idx + 1] * 0.5 + data[sourceIdx + 1] * 0.5);
         data[idx + 2] = (data[idx + 2] * 0.5 + data[sourceIdx + 2] * 0.5);
@@ -1941,23 +2076,24 @@ function applyMagneticField(imageData) {
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const idx = (y * width + x) * 4;
+      
       let forceX = 0;
       let forceY = 0;
       
       for (const pole of poles) {
         const dx = x - pole.x;
         const dy = y - pole.y;
-        const distSq = dx * dx + dy * dy;
-        const dist = Math.sqrt(distSq);
+        const dist = Math.sqrt(dx * dx + dy * dy);
         
         if (dist > 0) {
-          const force = pole.strength / distSq;
+          const force = pole.strength / dist;
           forceX += dx / dist * force;
           forceY += dy / dist * force;
         }
       }
-      const sourceX = Math.min(Math.max(Math.round(x + forceX), 0), width - 1);
-      const sourceY = Math.min(Math.max(Math.round(y + forceY), 0), height - 1);
+      
+      const sourceX = Math.min(Math.max(Math.floor(x + forceX), 0), width - 1);
+      const sourceY = Math.min(Math.max(Math.floor(y + forceY), 0), height - 1);
       const sourceIdx = (sourceY * width + sourceX) * 4;
       
       data[idx] = tempData[sourceIdx];
@@ -1983,8 +2119,10 @@ function applyEnergySpiral(imageData) {
       const dy = y - centerY;
       const dist = Math.sqrt(dx * dx + dy * dy);
       const angle = Math.atan2(dy, dx);
+      
       const spiralAngle = angle + dist * 0.05 + time;
       const spiralIntensity = Math.sin(spiralAngle) * 0.5 + 0.5;
+      
       data[idx] = data[idx] * spiralIntensity + 255 * (1 - spiralIntensity);
       data[idx + 1] = data[idx + 1] * (1 - spiralIntensity) + 255 * spiralIntensity;
       data[idx + 2] = data[idx + 2] * spiralIntensity;
@@ -1997,24 +2135,26 @@ function applyQuantumFlux(imageData) {
   const width = imageData.width;
   const height = imageData.height;
   const time = Date.now() * 0.001;
+  
   const fieldFreq = 0.05;
   const fieldAmplitude = 20;
   
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      
       const fieldVal = Math.sin(x * fieldFreq + time) * Math.cos(y * fieldFreq + time);
       const distortionX = fieldVal * fieldAmplitude;
       const distortionY = fieldVal * fieldAmplitude;
-      if (Math.random() < 0.05) {
-        const sourceX = Math.min(Math.max(Math.floor(x + distortionX), 0), width - 1);
-        const sourceY = Math.min(Math.max(Math.floor(y + distortionY), 0), height - 1);
-        
-        const idx = (y * width + x) * 4;
-        const sourceIdx = (sourceY * width + sourceX) * 4;
-        data[idx] = (data[idx] + data[sourceIdx]) / 2;
-        data[idx + 1] = (data[idx + 1] + data[sourceIdx + 1]) / 2;
-        data[idx + 2] = (data[idx + 2] + data[sourceIdx + 2]) / 2;
-      }
+      
+      const sourceX = Math.min(Math.max(Math.floor(x + distortionX), 0), width - 1);
+      const sourceY = Math.min(Math.max(Math.floor(y + distortionY), 0), height - 1);
+      
+      const sourceIdx = (sourceY * width + sourceX) * 4;
+      
+      data[idx] = (data[idx] + data[sourceIdx]) / 2;
+      data[idx + 1] = (data[idx + 1] + data[sourceIdx + 1]) / 2;
+      data[idx + 2] = (data[idx + 2] + data[sourceIdx + 2]) / 2;
     }
   }
 }
@@ -2024,9 +2164,11 @@ function applyNeonGlow(imageData) {
   const width = imageData.width;
   const height = imageData.height;
   const tempData = new Uint8ClampedArray(data);
+  
   for (let y = 1; y < height - 1; y++) {
     for (let x = 1; x < width - 1; x++) {
       const idx = (y * width + x) * 4;
+      
       const top = ((y - 1) * width + x) * 4;
       const bottom = ((y + 1) * width + x) * 4;
       const left = (y * width + (x - 1)) * 4;
@@ -2043,10 +2185,22 @@ function applyNeonGlow(imageData) {
       const edge = (edgeH + edgeV) / 6;
       
       if (edge > 30) {
-        data[idx] = Math.min(255, tempData[idx] + edge);
-        data[idx + 1] = Math.min(255, tempData[idx + 1] + edge);
-        data[idx + 2] = Math.min(255, tempData[idx + 2] + edge * 2);
+        data[idx] = 255 - data[idx];
+        data[idx + 1] = 255 - data[idx + 1];
+        data[idx + 2] = 255 - data[idx + 2];
       }
+    }
+  }
+  
+  for (let i = 0; i < data.length; i += 4) {
+    if (data[i] > 200 && data[i + 1] > 200 && data[i + 2] > 200) {
+      data[i] = 255;
+      data[i + 1] = 255;
+      data[i + 2] = 255;
+    } else if (data[i] < 50 && data[i + 1] < 50 && data[i + 2] < 50) {
+      data[i] = 0;
+      data[i + 1] = 0;
+      data[i + 2] = 0;
     }
   }
 }
@@ -2057,20 +2211,21 @@ function applyLiquidMetal(imageData) {
   const height = imageData.height;
   const tempData = new Uint8ClampedArray(data);
   const time = Date.now() * 0.001;
+  
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const idx = (y * width + x) * 4;
+      
       const wave1 = Math.sin(x * 0.05 + y * 0.03 + time) * 10;
       const wave2 = Math.cos(x * 0.04 + y * 0.06 + time * 1.5) * 8;
       
       const sourceX = Math.min(Math.max(Math.floor(x + wave1), 0), width - 1);
       const sourceY = Math.min(Math.max(Math.floor(y + wave2), 0), height - 1);
       const sourceIdx = (sourceY * width + sourceX) * 4;
-      const metallic = (Math.sin(x * 0.1 + y * 0.1 + time * 2) * 0.5 + 0.5) * 100;
       
-      data[idx] = Math.min(255, tempData[sourceIdx] + metallic);
-      data[idx + 1] = Math.min(255, tempData[sourceIdx + 1] + metallic);
-      data[idx + 2] = Math.min(255, tempData[sourceIdx + 2] + metallic);
+      data[idx] = Math.min(255, tempData[sourceIdx] + 50);
+      data[idx + 1] = Math.min(255, tempData[sourceIdx + 1] + 50);
+      data[idx + 2] = Math.min(255, tempData[sourceIdx + 2] + 50);
     }
   }
 }
@@ -2080,15 +2235,19 @@ function applyNeuralGlitch(imageData) {
   const width = imageData.width;
   const height = imageData.height;
   const time = Date.now() * 0.001;
+  
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const idx = (y * width + x) * 4;
+      
       const activation = 1 / (1 + Math.exp(-(Math.sin(x * 0.05 + time) + Math.cos(y * 0.05 + time))));
+      
       if (activation > 0.5) {
         data[idx] = 255 - data[idx];
         data[idx + 1] = data[idx + 1];
         data[idx + 2] = 255 - data[idx + 2];
       }
+      
       if (Math.abs(Math.sin(x * 0.1 + y * 0.1 + time) * Math.cos(x * 0.05 - y * 0.05 + time)) > 0.95) {
         data[idx] = 255;
         data[idx + 1] = 255;
@@ -2104,6 +2263,7 @@ function applyVoronoiBreak(imageData) {
   const height = imageData.height;
   const numCells = 20;
   const time = Date.now() * 0.001;
+  
   const cells = [];
   for (let i = 0; i < numCells; i++) {
     cells.push({
@@ -2118,6 +2278,7 @@ function applyVoronoiBreak(imageData) {
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const idx = (y * width + x) * 4;
+      
       let minDist = Infinity;
       let closestCell = null;
       
@@ -2131,20 +2292,15 @@ function applyVoronoiBreak(imageData) {
           closestCell = cell;
         }
       }
+      
       data[idx] = (data[idx] + closestCell.r) / 2;
       data[idx + 1] = (data[idx + 1] + closestCell.g) / 2;
       data[idx + 2] = (data[idx + 2] + closestCell.b) / 2;
-      for (const cell of cells) {
-        const dx = x - cell.x;
-        const dy = y - cell.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        
-        if (Math.abs(dist - Math.sqrt(minDist)) < 1.0) {
-          data[idx] = 255;
-          data[idx + 1] = 255;
-          data[idx + 2] = 255;
-          break;
-        }
+      
+      if (Math.random() < 0.1) {
+        data[idx] = 255;
+        data[idx + 1] = 255;
+        data[idx + 2] = 255;
       }
     }
   }
@@ -2155,41 +2311,41 @@ function applyElectricNoise(imageData) {
   const width = imageData.width;
   const height = imageData.height;
   const time = Date.now() * 0.001;
+  
   for (let i = 0; i < 10; i++) {
-    const startX = Math.random() * width;
-    const startY = Math.random() * height;
-    const endX = Math.random() * width;
-    const endY = Math.random() * height;
+    const startX = Math.floor(Math.random() * width);
+    const startY = Math.floor(Math.random() * height);
+    
     let x = startX;
     let y = startY;
     const steps = 100;
+    const thickness = 2;
     
     for (let step = 0; step < steps; step++) {
       const t = step / steps;
-      x = startX * (1 - t) + endX * t + (Math.random() - 0.5) * 20;
-      y = startY * (1 - t) + endY * t + (Math.random() - 0.5) * 20;
+      x = startX * (1 - t) + (Math.random() * width) * t + (Math.random() - 0.5) * 20;
+      y = startY * (1 - t) + (Math.random() * height) * t + (Math.random() - 0.5) * 20;
       
       if (x >= 0 && x < width && y >= 0 && y < height) {
-        const arcX = Math.floor(x);
-        const arcY = Math.floor(y);
-        const idx = (arcY * width + arcX) * 4;
+        const idx = (Math.floor(y) * width + Math.floor(x)) * 4;
+        
         data[idx] = 220;
         data[idx + 1] = 220;
         data[idx + 2] = 255;
-        for (let gy = -2; gy <= 2; gy++) {
-          for (let gx = -2; gx <= 2; gx++) {
-            const glowX = arcX + gx;
-            const glowY = arcY + gy;
+        
+        for (let gy = -thickness; gy <= thickness; gy++) {
+          for (let gx = -thickness; gx <= thickness; gx++) {
+            const px = Math.floor(x + gx);
+            const py = Math.floor(y + gy);
             
-            if (glowX >= 0 && glowX < width && glowY >= 0 && glowY < height) {
-              const glowIdx = (glowY * width + glowX) * 4;
+            if (px >= 0 && px < width && py >= 0 && py < height) {
+              const idx2 = (py * width + px) * 4;
               const dist = Math.sqrt(gx * gx + gy * gy);
-              
-              if (dist < 2) {
-                const intensity = (2 - dist) / 2;
-                data[glowIdx] = Math.min(255, data[glowIdx] + 180 * intensity);
-                data[glowIdx + 1] = Math.min(255, data[glowIdx + 1] + 200 * intensity);
-                data[glowIdx + 2] = Math.min(255, data[glowIdx + 2] + 255 * intensity);
+              if (dist <= thickness) {
+                const intensity = 1 - dist / thickness;
+                data[idx2] = Math.min(255, data[idx2] + 180 * intensity);
+                data[idx2 + 1] = Math.min(255, data[idx2 + 1] + 200 * intensity);
+                data[idx2 + 2] = Math.min(255, data[idx2 + 2] + 255 * intensity);
               }
             }
           }
@@ -2210,30 +2366,31 @@ function applySubatomicShuffle(imageData) {
     const y1 = Math.floor(Math.random() * height);
     const x2 = Math.floor(Math.random() * width);
     const y2 = Math.floor(Math.random() * height);
+    
     const idx1 = (y1 * width + x1) * 4;
     const idx2 = (y2 * width + x2) * 4;
-    if (Math.random() < 0.7) {
-      const temp = [data[idx1], data[idx1 + 1], data[idx1 + 2]];
-      data[idx1] = data[idx2];
-      data[idx1 + 1] = data[idx2 + 1];
-      data[idx1 + 2] = data[idx2 + 2];
-      data[idx2] = temp[0];
-      data[idx2 + 1] = temp[1];
-      data[idx2 + 2] = temp[2];
-    }
+    
+    const temp = [data[idx1], data[idx1 + 1], data[idx1 + 2]];
+    data[idx1] = data[idx2];
+    data[idx1 + 1] = data[idx2 + 1];
+    data[idx1 + 2] = data[idx2 + 2];
+    data[idx2] = temp[0];
+    data[idx2 + 1] = temp[1];
+    data[idx2 + 2] = temp[2];
   }
 }
 
 function applyVideoStatic(imageData) {
   const data = imageData.data;
-  const amount = staticAmount / 100;
+  const amount = staticAmount / 100; 
   
   for (let i = 0; i < data.length; i += 4) {
     if (Math.random() < amount) {
       const noise = Math.random() * 255;
-      data[i] = noise;     // R
-      data[i + 1] = noise; // G
-      data[i + 2] = noise; // B
+      
+      data[i] = noise;     
+      data[i + 1] = noise; 
+      data[i + 2] = noise; 
     }
   }
 }
@@ -2267,16 +2424,17 @@ function makeDistortionCurve(amount) {
 
 async function reverseAudio() {
   if (!audioContext || !source) return;
-  if (!audioBuffer) {
-    const response = await fetch(video.src);
-    const arrayBuffer = await response.arrayBuffer();
-    audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-  }
+  
+  const response = await fetch(video.src);
+  const arrayBuffer = await response.arrayBuffer();
+  audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+  
   const reversedBuffer = audioContext.createBuffer(
     audioBuffer.numberOfChannels,
     audioBuffer.length,
     audioBuffer.sampleRate
   );
+  
   for (let channel = 0; channel < audioBuffer.numberOfChannels; channel++) {
     const channelData = audioBuffer.getChannelData(channel);
     const reversedData = reversedBuffer.getChannelData(channel);
@@ -2284,6 +2442,7 @@ async function reverseAudio() {
       reversedData[i] = channelData[channelData.length - 1 - i];
     }
   }
+  
   source.disconnect();
   const newSource = audioContext.createBufferSource();
   newSource.buffer = audioReversed ? audioBuffer : reversedBuffer;
@@ -2295,6 +2454,7 @@ async function reverseAudio() {
 }
 
 document.getElementById('audioReverse').addEventListener('click', reverseAudio);
+
 document.getElementById('mathGlitch').addEventListener('click', e => toggleEffect('mathGlitch', e.target));
 document.getElementById('cellularAutomata').addEventListener('click', e => toggleEffect('cellularAutomata', e.target));
 document.getElementById('edgeDetection').addEventListener('click', e => toggleEffect('edgeDetection', e.target));
@@ -2310,120 +2470,1681 @@ document.getElementById('neuralGlitch').addEventListener('click', e => toggleEff
 document.getElementById('voronoiBreak').addEventListener('click', e => toggleEffect('voronoiBreak', e.target));
 document.getElementById('electricNoise').addEventListener('click', e => toggleEffect('electricNoise', e.target));
 document.getElementById('subatomicShuffle').addEventListener('click', e => toggleEffect('subatomicShuffle', e.target));
-document.getElementById('phosphor').addEventListener('click', e => toggleEffect('phosphor', e.target));
-document.getElementById('analogDrift').addEventListener('click', e => toggleEffect('analogDrift', e.target));
-document.getElementById('vhsTracking').addEventListener('click', e => toggleEffect('vhsTracking', e.target));
-document.getElementById('digitalTear').addEventListener('click', e => toggleEffect('digitalTear', e.target));
-document.getElementById('acidWash').addEventListener('click', e => toggleEffect('acidWash', e.target));
-document.getElementById('plasmaWave').addEventListener('click', e => toggleEffect('plasmaWave', e.target));
-document.getElementById('bitrot').addEventListener('click', e => toggleEffect('bitrot', e.target));
-document.getElementById('frequencyShift').addEventListener('click', e => toggleEffect('frequencyShift', e.target));
-document.getElementById('analogBleed').addEventListener('click', e => toggleEffect('analogBleed', e.target));
-document.getElementById('timeStretch').addEventListener('click', e => toggleEffect('timeStretch', e.target));
-document.getElementById('digitalSmear').addEventListener('click', e => toggleEffect('digitalSmear', e.target));
-document.getElementById('quantumGlitch').addEventListener('click', e => toggleEffect('quantumGlitch', e.target));
-document.getElementById('fractalNoise').addEventListener('click', e => toggleEffect('fractalNoise', e.target));
-document.getElementById('signalBleed').addEventListener('click', e => toggleEffect('signalBleed', e.target));
-document.getElementById('memoryLeak').addEventListener('click', e => toggleEffect('memoryLeak', e.target));
-document.getElementById('waveform').addEventListener('click', e => toggleEffect('waveform', e.target));
-document.getElementById('mirrorGlitch').addEventListener('click', e => toggleEffect('mirrorGlitch', e.target));
-document.getElementById('timeDisplacement').addEventListener('click', e => toggleEffect('timeDisplacement', e.target));
-document.getElementById('pixelSort').addEventListener('click', e => toggleEffect('pixelSort', e.target));
-document.getElementById('compressionArtifacts').addEventListener('click', e => toggleEffect('compressionArtifacts', e.target));
-document.getElementById('glitchWalk').addEventListener('click', e => toggleEffect('glitchWalk', e.target));
-document.getElementById('interlace').addEventListener('click', e => toggleEffect('interlace', e.target));
-document.getElementById('signalCorruption').addEventListener('click', e => toggleEffect('signalCorruption', e.target));
-document.getElementById('dataMosh').addEventListener('click', e => toggleEffect('dataMosh', e.target));
-document.getElementById('blocksGlitch').addEventListener('click', e => toggleEffect('blocksGlitch', e.target));
-document.getElementById('tearingEffect').addEventListener('click', e => toggleEffect('tearingEffect', e.target));
-document.getElementById('colorShift').addEventListener('click', e => toggleEffect('colorShift', e.target));
-document.getElementById('ghosting').addEventListener('click', e => toggleEffect('ghosting', e.target));
-document.getElementById('chromaticAberration').addEventListener('click', e => toggleEffect('chromaticAberration', e.target));
-const recordButton = document.getElementById('recordButton');
-const downloadSourceButton = document.getElementById('downloadSourceButton');
-const downloadModal = document.getElementById('downloadModal');
-const sourceVideo = document.getElementById('sourceVideo');
-const closeSourceModal = document.getElementById('closeSourceModal');
-let mediaRecorder = null;
-let recordedChunks = [];
+document.getElementById('rgbToYuv').addEventListener('click', e => toggleEffect('rgbToYuv', e.target));
+document.getElementById('yuvToRgb').addEventListener('click', e => toggleEffect('yuvToRgb', e.target));
+document.getElementById('cumulativeMath').addEventListener('click', e => toggleEffect('cumulativeMath', e.target));
+document.getElementById('literalSort').addEventListener('click', e => toggleEffect('literalSort', e.target));
+document.getElementById('lowPass').addEventListener('click', e => toggleEffect('lowPass', e.target));
+document.getElementById('lumiSort').addEventListener('click', e => toggleEffect('lumiSort', e.target));
+document.getElementById('qamFault').addEventListener('click', e => toggleEffect('qamFault', e.target));
+document.getElementById('threeDDisplace').addEventListener('click', e => toggleEffect('threeDDisplace', e.target));
+document.getElementById('codeBlock').addEventListener('click', e => toggleEffect('codeBlock', e.target));
+document.getElementById('tvNoise').addEventListener('click', e => toggleEffect('tvNoise', e.target));
+document.getElementById('vhsTape').addEventListener('click', e => toggleEffect('vhsTape', e.target));
+document.getElementById('dataCorruption').addEventListener('click', e => toggleEffect('dataCorruption', e.target));
+document.getElementById('signalJammer').addEventListener('click', e => toggleEffect('signalJammer', e.target));
+document.getElementById('crtEffect').addEventListener('click', e => toggleEffect('crtEffect', e.target));
+document.getElementById('filmGrain').addEventListener('click', e => toggleEffect('filmGrain', e.target));
+document.getElementById('oldMovie').addEventListener('click', e => toggleEffect('oldMovie', e.target));
+document.getElementById('fractalize').addEventListener('click', e => toggleEffect('fractalize', e.target));
+document.getElementById('bloomEffect').addEventListener('click', e => toggleEffect('bloomEffect', e.target));
+document.getElementById('deepfry').addEventListener('click', e => toggleEffect('deepfry', e.target));
+document.getElementById('infrared').addEventListener('click', e => toggleEffect('infrared', e.target));
+document.getElementById('nightVision').addEventListener('click', e => toggleEffect('nightVision', e.target));
+document.getElementById('thermographics').addEventListener('click', e => toggleEffect('thermographics', e.target));
+document.getElementById('radioWaves').addEventListener('click', e => toggleEffect('radioWaves', e.target));
+document.getElementById('xray').addEventListener('click', e => toggleEffect('xray', e.target));
+document.getElementById('vaporwave').addEventListener('click', e => toggleEffect('vaporwave', e.target));
+document.getElementById('cyberpunk').addEventListener('click', e => toggleEffect('cyberpunk', e.target));
+document.getElementById('glitchCore').addEventListener('click', e => toggleEffect('glitchCore', e.target));
+document.getElementById('recursion').addEventListener('click', e => toggleEffect('recursion', e.target));
+document.getElementById('pixelation3D').addEventListener('click', e => toggleEffect('pixelation3D', e.target));
+document.getElementById('timeWarp').addEventListener('click', e => toggleEffect('timeWarp', e.target));
+document.getElementById('fourthDimension').addEventListener('click', e => toggleEffect('fourthDimension', e.target));
+document.getElementById('dataBending').addEventListener('click', e => toggleEffect('dataBending', e.target));
+document.getElementById('circuitBreak').addEventListener('click', e => toggleEffect('circuitBreak', e.target));
+document.getElementById('machineCode').addEventListener('click', e => toggleEffect('machineCode', e.target));
+document.getElementById('artifactGeneration').addEventListener('click', e => toggleEffect('artifactGeneration', e.target));
+document.getElementById('quantumEntanglement').addEventListener('click', e => toggleEffect('quantumEntanglement', e.target));
+document.getElementById('matrixRain').addEventListener('click', e => toggleEffect('matrixRain', e.target));
+document.getElementById('hologramGlitch').addEventListener('click', e => toggleEffect('hologramGlitch', e.target));
+document.getElementById('sinWave').addEventListener('click', e => toggleEffect('sinWave', e.target));
+document.getElementById('cosWave').addEventListener('click', e => toggleEffect('cosWave', e.target));
+document.getElementById('tanWave').addEventListener('click', e => toggleEffect('tanWave', e.target));
+document.getElementById('byteShift').addEventListener('click', e => toggleEffect('byteShift', e.target));
+document.getElementById('harmonicDistortion').addEventListener('click', e => toggleEffect('harmonicDistortion', e.target));
+document.getElementById('cellularShift').addEventListener('click', e => toggleEffect('cellularShift', e.target));
+document.getElementById('digitalDecay').addEventListener('click', e => toggleEffect('digitalDecay', e.target));
+document.getElementById('fractalMosaic').addEventListener('click', e => toggleEffect('fractalMosaic', e.target));
 
-recordButton.addEventListener('click', () => {
-  if (!video) {
-    alert('Please select a video first');
-    return;
+function applyRgbToYuv(imageData) {
+  const data = imageData.data;
+  for (let i = 0; i < data.length; i += 4) {
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+    
+    const y = 0.299 * r + 0.587 * g + 0.114 * b;
+    const u = 0.492 * (b - y);
+    const v = 0.877 * (r - y);
+    
+    data[i] = y;     
+    data[i + 1] = u + 128; 
+    data[i + 2] = v + 128; 
   }
-  if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-    mediaRecorder.stop();
-    return;
+}
+
+function applyYuvToRgb(imageData) {
+  const data = imageData.data;
+  for (let i = 0; i < data.length; i += 4) {
+    const y = data[i];
+    const u = data[i + 1] - 128; 
+    const v = data[i + 2] - 128; 
+    
+    const r = y + 1.140 * v;
+    const g = y - 0.395 * u - 0.581 * v;
+    const b = y + 2.032 * u;
+    
+    data[i] = Math.min(255, Math.max(0, r));
+    data[i + 1] = Math.min(255, Math.max(0, g));
+    data[i + 2] = Math.min(255, Math.max(0, b));
   }
-  const stream = canvas.captureStream(30);
-  const audioDestination = audioContext.createMediaStreamDestination();
-  source.connect(audioDestination);
-  const combinedStream = new MediaStream([
-    ...stream.getTracks(),
-    ...audioDestination.stream.getTracks()
-  ]);
+}
 
-  mediaRecorder = new MediaRecorder(combinedStream, {
-    mimeType: 'video/mp4'
-  });
+function applyCumulativeMath(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  
+  let sumR = 0, sumG = 0, sumB = 0;
+  
+  for (let i = 0; i < data.length; i += 4) {
+    sumR += data[i];
+    sumG += data[i + 1];
+    sumB += data[i + 2];
+    
+    data[i] = sumR % 256;
+    data[i + 1] = sumG % 256;
+    data[i + 2] = sumB % 256;
+  }
+}
 
-  recordedChunks = [];
-  mediaRecorder.ondataavailable = (event) => {
-    if (event.data.size > 0) {
-      recordedChunks.push(event.data);
+function applyLiteralSort(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  
+  for (let y = 0; y < height; y += 10) {
+    if (Math.random() < 0.3) continue;
+    
+    for (let x = 0; x < width; x += 8) {
+      if (Math.random() < 0.7) {
+        const value = Math.floor(Math.random() * 256);
+        
+        for (let by = 0; by < 8 && y + by < height; by++) {
+          for (let bx = 0; bx < 8 && x + bx < width; bx++) {
+            const idx = ((y + by) * width + (x + bx)) * 4;
+            
+            data[idx] = 10;
+            data[idx + 1] = 255;
+            data[idx + 2] = 10;
+          }
+        }
+      }
     }
-  };
-
-  mediaRecorder.onstop = () => {
-    const blob = new Blob(recordedChunks, { type: 'video/mp4' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'glitched_video.mp4';
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
-  recordButton.textContent = 'Stop Recording';
-  recordButton.classList.add('active');
-  mediaRecorder.start();
-});
-
-downloadSourceButton.addEventListener('click', () => {
-  if (!video || !video.src) {
-    alert('Please select a video first');
-    return;
   }
-  canvas.toBlob(function(blob) {
-    const url = URL.createObjectURL(blob);
-    sourceVideo.src = url;
-    sourceVideo.controls = true;
-    downloadModal.style.display = 'block';
-    const downloadBtn = document.createElement('button');
-    downloadBtn.textContent = 'Download Glitched Video';
-    downloadBtn.style.marginTop = '10px';
-    downloadBtn.addEventListener('click', () => {
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'glitched_video.webm';
-      a.click();
+}
+
+function applyLowPass(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const tempData = new Uint8ClampedArray(data);
+  
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      
+      let sumR = 0, sumG = 0, sumB = 0, count = 0;
+      
+      for (let ky = -1; ky <= 1; ky++) {
+        for (let kx = -1; kx <= 1; kx++) {
+          const nx = x + kx;
+          const ny = y + ky;
+          
+          if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+            const kernelIdx = (ny * width + nx) * 4;
+            sumR += tempData[kernelIdx];
+            sumG += tempData[kernelIdx + 1];
+            sumB += tempData[kernelIdx + 2];
+            count++;
+          }
+        }
+      }
+      
+      data[idx] = sumR / count;
+      data[idx + 1] = sumG / count;
+      data[idx + 2] = sumB / count;
+    }
+  }
+}
+
+function applyLumiSort(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  
+  for (let y = 0; y < height; y += 10) {
+    const chunkStart = y * width * 4;
+    const chunkEnd = chunkStart + width * 10 * 4;
+    const pixels = [];
+    
+    for (let x = 0; x < width; x++) {
+      const idx = chunkStart + x * 4;
+      const luminance = 0.299 * data[idx] + 0.587 * data[idx + 1] + 0.114 * data[idx + 2];
+      pixels.push({
+        idx,
+        luminance,
+        color: [data[idx], data[idx + 1], data[idx + 2]]
+      });
+    }
+    
+    pixels.sort((a, b) => a.luminance - b.luminance);
+    
+    pixels.forEach((pixel, index) => {
+      const targetIdx = chunkStart + index * 4;
+      data[targetIdx] = pixel.color[0];
+      data[targetIdx + 1] = pixel.color[1];
+      data[targetIdx + 2] = pixel.color[2];
     });
-
-    const downloadControls = document.querySelector('.download-controls');
-    const existingDownloadBtn = downloadControls.querySelector('button:not(#closeSourceModal)');
-    if (existingDownloadBtn) {
-      existingDownloadBtn.remove();
-    }
-    downloadControls.appendChild(downloadBtn);
-  }, 'video/webm');
-});
-downloadModal.addEventListener('click', (event) => {
-  if (event.target === downloadModal) {
-    downloadModal.style.display = 'none';
-    sourceVideo.src = '';
   }
-});
+}
+
+function applyQamFault(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  for (let y = 0; y < height; y++) {
+    const phaseShift = Math.sin(y * 0.05 + time) * Math.PI;
+    const amplitude = Math.cos(time * 0.5) * 0.5 + 0.5;
+    
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      
+      const inPhase = Math.cos(x * 0.1 + phaseShift) * amplitude;
+      const quadrature = Math.sin(x * 0.1 + phaseShift) * amplitude;
+      
+      data[idx] = data[idx] * inPhase + data[idx + 1] * quadrature;
+      data[idx + 1] = data[idx + 1] * inPhase + data[idx] * quadrature;
+      data[idx + 2] = data[idx + 2] * (inPhase + quadrature) / 2;
+    }
+  }
+}
+
+function applyThreeDDisplace(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const tempData = new Uint8ClampedArray(data);
+  const time = Date.now() * 0.001;
+  
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      
+      const z = Math.sin((x / width) * Math.PI * 2 + time) * Math.cos((y / height) * Math.PI * 2 + time) * 20;
+      
+      const sourceX = Math.min(Math.max(x + Math.floor(z), 0), width - 1);
+      const sourceY = Math.min(Math.max(y + Math.floor(z), 0), height - 1);
+      const sourceIdx = (sourceY * width + sourceX) * 4;
+      
+      data[idx] = tempData[sourceIdx];
+      data[idx + 1] = tempData[sourceIdx + 1];
+      data[idx + 2] = tempData[sourceIdx + 2];
+    }
+  }
+}
+
+function applyCodeBlock(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const blockSize = 20;
+  
+  for (let y = 0; y < height; y += blockSize) {
+    for (let x = 0; x < width; x += blockSize) {
+      if (Math.random() < 0.2) {
+        for (let by = 0; by < blockSize && y + by < height; by++) {
+          const isLine = Math.random() < 0.7; 
+          
+          if (isLine) {
+            const lineLength = Math.floor(Math.random() * blockSize) + blockSize / 2;
+            const lineOffset = Math.floor(Math.random() * (blockSize - lineLength));
+            
+            for (let bx = lineOffset; bx < lineOffset + lineLength && x + bx < width; bx++) {
+              const idx = ((y + by) * width + (x + bx)) * 4;
+              data[idx] = 20;     
+              data[idx + 1] = 180; 
+              data[idx + 2] = 30;  
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+function applyTvNoise(imageData) {
+  const data = imageData.data;
+  const noiseAmount = 0.3;
+  
+  for (let i = 0; i < data.length; i += 4) {
+    if (Math.random() < noiseAmount) {
+      const noise = Math.random() * 255;
+      
+      data[i] = noise;     
+      data[i + 1] = noise; 
+      data[i + 2] = noise; 
+    }
+  }
+}
+
+function applyVhsTape(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  for (let y = 0; y < height; y++) {
+    const trackingError = Math.sin(y * 0.1 + time) * 10;
+    const colorBleed = Math.sin(y * 0.05 + time * 0.5) * 5;
+    
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      
+      const sourceX = Math.floor(x + trackingError) % width;
+      const sourceIdx = (y * width + sourceX) * 4;
+      
+      data[idx] = data[sourceIdx]; 
+      data[idx + 1] = data[sourceIdx + 1]; 
+      data[idx + 2] = data[sourceIdx + 2]; 
+      
+      if (Math.random() < 0.1) {
+        data[idx] = Math.random() * 255;
+        data[idx + 1] = Math.random() * 255;
+        data[idx + 2] = Math.random() * 255;
+      }
+    }
+  }
+}
+
+function applyDataCorruption(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  
+  for (let i = 0; i < 20; i++) { 
+    const startY = Math.floor(Math.random() * height);
+    const corruptionHeight = Math.floor(Math.random() * 50) + 10;
+    const dataLoss = Math.random() < 0.5; 
+    
+    for (let y = startY; y < startY + corruptionHeight && y < height; y++) {
+      if (dataLoss) {
+        for (let x = 0; x < width; x++) {
+          const idx = (y * width + x) * 4;
+          data[idx] = Math.random() * 255;
+          data[idx + 1] = Math.random() * 255;
+          data[idx + 2] = Math.random() * 255;
+        }
+      } else {
+        const shift = Math.floor(Math.random() * 7) + 1; 
+        
+        for (let x = 0; x < width; x++) {
+          const idx = (y * width + x) * 4;
+          data[idx] = (data[idx] << shift) & 255 | (data[idx] >> (8 - shift));
+          data[idx + 1] = (data[idx + 1] << shift) & 255 | (data[idx + 1] >> (8 - shift));
+          data[idx + 2] = (data[idx + 2] << shift) & 255 | (data[idx + 2] >> (8 - shift));
+        }
+      }
+    }
+  }
+}
+
+function applySignalJammer(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  for (let y = 0; y < height; y++) {
+    const jamStrength = Math.sin(y * 0.05 + time * 2) * 0.5 + 0.5;
+    const jamFreq = Math.cos(time) * 10 + 20;
+    
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      
+      const jamPattern = Math.sin(x / jamFreq) * jamStrength;
+      
+      if (Math.abs(jamPattern) > 0.7) {
+        data[idx] = Math.random() * 255;
+        data[idx + 1] = Math.random() * 255;
+        data[idx + 2] = Math.random() * 255;
+      } else if (Math.abs(jamPattern) > 0.4) {
+        data[idx] = 255 - data[idx];
+        data[idx + 1] = data[idx + 1] * 0.5;
+        data[idx + 2] = data[idx + 2] * 0.5;
+      } else if (Math.abs(jamPattern) > 0.2) {
+        data[idx] = data[idx] * 0.8 + 50;
+        data[idx + 1] = data[idx + 1] * 0.8 + 50;
+        data[idx + 2] = data[idx + 2] * 0.8 + 50;
+      }
+    }
+  }
+}
+
+function applyCrtEffect(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  for (let y = 0; y < height; y++) {
+    const scanlineFactor = (y % 2 === 0) ? 0.85 : 1.0;
+    
+    const flickerAmount = Math.sin(time * 10) * 0.05 + 0.95;
+    
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      
+      const rFactor = 1.0, gFactor = 1.0, bFactor = 1.0;
+      
+      switch (x % 3) {
+        case 0: rFactor = 1.2; break; 
+        case 1: gFactor = 1.2; break; 
+        case 2: bFactor = 1.2; break; 
+      }
+      
+      data[idx] = data[idx] * rFactor * scanlineFactor * flickerAmount;
+      data[idx + 1] = data[idx + 1] * gFactor * scanlineFactor * flickerAmount;
+      data[idx + 2] = data[idx + 2] * bFactor * scanlineFactor * flickerAmount;
+      
+      const dx = x / width - 0.5;
+      const dy = y / height - 0.5;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const vignette = 1 - dist * 1.5;
+      
+      if (vignette < 1) {
+        data[idx] *= vignette;
+        data[idx + 1] *= vignette;
+        data[idx + 2] *= vignette;
+      }
+    }
+  }
+}
+
+function applyFilmGrain(imageData) {
+  const data = imageData.data;
+  const grainAmount = 0.15;
+  
+  for (let i = 0; i < data.length; i += 4) {
+    const grain = (Math.random() - 0.5) * grainAmount * 255;
+    
+    data[i] = Math.min(255, Math.max(0, data[i] + grain));
+    data[i + 1] = Math.min(255, Math.max(0, data[i + 1] + grain));
+    data[i + 2] = Math.min(255, Math.max(0, data[i + 2] + grain));
+  }
+}
+
+function applyOldMovie(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  for (let i = 0; i < data.length; i += 4) {
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+    
+    const sepia = (r * 0.393) + (g * 0.769) + (b * 0.189);
+    data[i] = Math.min(255, sepia);
+    data[i + 1] = Math.min(255, (r * 0.349) + (g * 0.686) + (b * 0.168));
+    data[i + 2] = Math.min(255, (r * 0.272) + (g * 0.534) + (b * 0.131));
+  }
+  
+  if (Math.random() < 0.3) {
+    const scratchX = Math.floor(Math.random() * width);
+    const scratchWidth = Math.floor(Math.random() * 3) + 1;
+    
+    for (let y = 0; y < height; y++) {
+      for (let x = scratchX; x < scratchX + scratchWidth && x < width; x++) {
+        const idx = (y * width + x) * 4;
+        data[idx] = 255;
+        data[idx + 1] = 255;
+        data[idx + 2] = 255;
+      }
+    }
+  }
+  
+  for (let i = 0; i < 100; i++) {
+    const speckX = Math.floor(Math.random() * width);
+    const speckY = Math.floor(Math.random() * height);
+    const speckSize = Math.floor(Math.random() * 3) + 1;
+    
+    for (let y = 0; y < speckSize; y++) {
+      for (let x = 0; x < speckSize; x++) {
+        const newX = speckX + x;
+        const newY = speckY + y;
+        
+        if (newX < width && newY < height) {
+          const idx = (newY * width + newX) * 4;
+          data[idx] = 0;
+          data[idx + 1] = 0;
+          data[idx + 2] = 0;
+        }
+      }
+    }
+  }
+  
+  if (Math.random() < 0.1) {
+    for (let i = 0; i < data.length; i += 4) {
+      data[i] *= 0.9;
+      data[i + 1] *= 0.9;
+      data[i + 2] *= 0.9;
+    }
+  }
+}
+
+function applyFractalize(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  const centerX = width / 2;
+  const centerY = height / 2;
+  const zoom = Math.sin(time * 0.5) * 0.5 + 1.5;
+  
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      
+      const zx = (x - centerX) / (width * 0.25) / zoom;
+      const zy = (y - centerY) / (height * 0.25) / zoom;
+      
+      const c_real = Math.sin(time * 0.5) * 0.7;
+      const c_imag = Math.cos(time * 0.3) * 0.7;
+      
+      let cx = zx;
+      let cy = zy;
+      let iteration = 0;
+      const maxIteration = 20;
+      
+      while (cx * cx + cy * cy < 4 && iteration < maxIteration) {
+        const aa = cx * cx - cy * cy + c_real;
+        const bb = 2 * cx * cy + c_imag;
+        cx = aa;
+        cy = bb;
+        iteration++;
+      }
+      
+      if (iteration < maxIteration) {
+        const smoothColor = iteration + 1 - Math.log(Math.log(cx * cx + cy * cy)) / Math.log(2);
+        const hue = (smoothColor * 10 + time * 20) % 360;
+        
+        const [r, g, b] = hslToRgb(hue / 360, 0.8, 0.5);
+        
+        data[idx] = (data[idx] + r) / 2;
+        data[idx + 1] = (data[idx + 1] + g) / 2;
+        data[idx + 2] = (data[idx + 2] + b) / 2;
+      }
+    }
+  }
+}
+
+function applyBloomEffect(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const tempData = new Uint8ClampedArray(data);
+  
+  const brightPixels = new Uint8ClampedArray(data.length);
+  const threshold = 200;
+  
+  for (let i = 0; i < data.length; i += 4) {
+    const brightness = (tempData[i] + tempData[i + 1] + tempData[i + 2]) / 3;
+    if (brightness > threshold) {
+      brightPixels[i] = tempData[i];
+      brightPixels[i + 1] = tempData[i + 1];
+      brightPixels[i + 2] = tempData[i + 2];
+      brightPixels[i + 3] = tempData[i + 3];
+    }
+  }
+  
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      
+      let sumR = 0, sumG = 0, sumB = 0, count = 0;
+      
+      for (let ky = -10; ky <= 10; ky++) {
+        for (let kx = -10; kx <= 10; kx++) {
+          const nx = x + kx;
+          const ny = y + ky;
+          
+          if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+            const kernelIdx = (ny * width + nx) * 4;
+            sumR += brightPixels[kernelIdx];
+            sumG += brightPixels[kernelIdx + 1];
+            sumB += brightPixels[kernelIdx + 2];
+            count++;
+          }
+        }
+      }
+      
+      if (count > 0) {
+        data[idx] = Math.min(255, tempData[idx] + sumR / count * 0.5);
+        data[idx + 1] = Math.min(255, tempData[idx + 1] + sumG / count * 0.5);
+        data[idx + 2] = Math.min(255, tempData[idx + 2] + sumB / count * 0.5);
+      }
+    }
+  }
+}
+
+function applyDeepfry(imageData) {
+  const data = imageData.data;
+  
+  for (let i = 0; i < data.length; i += 4) {
+    data[i] = Math.min(255, data[i] * 1.2);
+    data[i + 1] = Math.min(255, data[i + 1] * 1.1);
+    
+    data[i] = Math.floor(data[i] / 32) * 32;
+    data[i + 1] = Math.floor(data[i + 1] / 32) * 32;
+    data[i + 2] = Math.floor(data[i + 2] / 32) * 32;
+  }
+}
+
+function applyInfrared(imageData) {
+  const data = imageData.data;
+  
+  for (let i = 0; i < data.length; i += 4) {
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+    
+    const heat = (r + g + b) / 3;
+    
+    data[i] = heat * 0.1;     
+    data[i + 1] = heat * 1.2;  
+    data[i + 2] = heat * 0.3;  
+  }
+  
+  for (let i = 0; i < data.length; i += 4) {
+    if (Math.random() < 0.2) {
+      const noise = Math.random() * 30;
+      data[i] += noise * 0.1;
+      data[i + 1] += noise * 0.5;
+      data[i + 2] += noise * 0.1;
+    }
+  }
+  
+  for (let i = 0; i < 20; i++) {
+    const x = Math.floor(Math.random() * width);
+    const y = Math.floor(Math.random() * height);
+    const radius = Math.floor(Math.random() * 5) + 2;
+    
+    for (let ry = -radius; ry <= radius; ry++) {
+      for (let rx = -radius; rx <= radius; rx++) {
+        const dist = rx * rx + ry * ry;
+        if (dist <= radius * radius) {
+          const newX = x + rx;
+          const newY = y + ry;
+          
+          if (newX >= 0 && newX < width && newY >= 0 && newY < height) {
+            const idx = (newY * width + newX) * 4;
+            const brightness = 1 - dist / (radius * radius);
+            
+            data[idx] += 50 * brightness;
+            data[idx + 1] += 200 * brightness;
+            data[idx + 2] += 50 * brightness;
+          }
+        }
+      }
+    }
+  }
+}
+
+function applyNightVision(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  
+  for (let i = 0; i < data.length; i += 4) {
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+    
+    const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
+    
+    data[i] = brightness * 0.1;     
+    data[i + 1] = brightness * 1.2;  
+    data[i + 2] = brightness * 0.3;  
+  }
+  
+  for (let i = 0; i < data.length; i += 4) {
+    if (Math.random() < 0.2) {
+      const noise = Math.random() * 30;
+      data[i] += noise * 0.1;
+      data[i + 1] += noise * 0.5;
+      data[i + 2] += noise * 0.1;
+    }
+  }
+  
+  for (let i = 0; i < 20; i++) {
+    const x = Math.floor(Math.random() * width);
+    const y = Math.floor(Math.random() * height);
+    const radius = Math.floor(Math.random() * 5) + 2;
+    
+    for (let ry = -radius; ry <= radius; ry++) {
+      for (let rx = -radius; rx <= radius; rx++) {
+        const dist = rx * rx + ry * ry;
+        if (dist <= radius * radius) {
+          const newX = x + rx;
+          const newY = y + ry;
+          
+          if (newX >= 0 && newX < width && newY >= 0 && newY < height) {
+            const idx = (newY * width + newX) * 4;
+            const brightness = 1 - dist / (radius * radius);
+            
+            data[idx] += 50 * brightness;
+            data[idx + 1] += 200 * brightness;
+            data[idx + 2] += 50 * brightness;
+          }
+        }
+      }
+    }
+  }
+}
+
+function applyThermographics(imageData) {
+  const data = imageData.data;
+  
+  for (let i = 0; i < data.length; i += 4) {
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+    
+    const heat = (r + g + b) / 3;
+    
+    if (heat < 51) {
+      data[i] = 0;
+      data[i + 1] = 0;
+      data[i + 2] = heat * 5;
+    } else if (heat < 102) {
+      data[i] = 0;
+      data[i + 1] = heat - 51;
+      data[i + 2] = 255;
+    } else if (heat < 153) {
+      data[i] = heat - 102;
+      data[i + 1] = 255;
+      data[i + 2] = 255 - (heat - 102);
+    } else if (heat < 204) {
+      data[i] = 255;
+      data[i + 1] = 255 - (heat - 153);
+      data[i + 2] = 0;
+    } else {
+      data[i] = 255;
+      data[i + 1] = heat - 204;
+      data[i + 2] = heat - 204;
+    }
+  }
+}
+
+function applyRadioWaves(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  const centerX = width / 2;
+  const centerY = height / 2;
+  
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      
+      const dx = x - centerX;
+      const dy = y - centerY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      
+      const wave = Math.sin(distance * 0.1 - time * 3);
+      const effect = wave * 0.5 + 0.5;
+      
+      data[idx] = data[idx] * (1 - effect) + 0 * effect;
+      data[idx + 1] = data[idx + 1] * (1 - effect) + 100 * effect;
+      data[idx + 2] = data[idx + 2] * (1 - effect) + 255 * effect;
+    }
+  }
+}
+
+function applyXray(imageData) {
+  const data = imageData.data;
+  
+  for (let i = 0; i < data.length; i += 4) {
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+    
+    const brightness = 255 - (r * 0.299 + g * 0.587 + b * 0.114);
+    
+    data[i] = brightness * 0.8;
+    data[i + 1] = brightness * 0.9;
+    data[i + 2] = brightness;
+  }
+  
+  for (let i = 0; i < data.length; i += 4) {
+    if (data[i] > 200 && data[i + 1] > 200 && data[i + 2] > 200) {
+      data[i] = 255;
+      data[i + 1] = 255;
+      data[i + 2] = 255;
+    } else if (data[i] < 50 && data[i + 1] < 50 && data[i + 2] < 50) {
+      data[i] = 0;
+      data[i + 1] = 0;
+      data[i + 2] = 0;
+    }
+  }
+}
+
+function applyVaporwave(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  for (let y = 0; y < height; y++) {
+    const scanlineEffect = y % 4 === 0 ? 0.9 : 1.0;
+    
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      
+      data[idx] = Math.min(255, data[idx] * 1.2); 
+      data[idx + 1] = Math.min(255, data[idx + 1] * 0.8); 
+      data[idx + 2] = Math.min(255, data[idx + 2] * 1.2); 
+      
+      const colorShift = Math.sin(x * 0.01 + time) * 0.5 + 0.5;
+      data[idx] = data[idx] * (1 - colorShift) + (255 * colorShift);
+      data[idx + 2] = data[idx + 2] * (1 - colorShift) + (255 * colorShift);
+    }
+  }
+}
+
+function applyCyberpunk(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      
+      data[idx] = Math.min(255, data[idx] * 1.4);
+      data[idx + 1] = Math.min(255, data[idx + 1] * 0.7);
+      data[idx + 2] = Math.min(255, data[idx + 2] * 1.4);
+      
+      if (data[idx] > 170 && data[idx + 1] > 170 && data[idx + 2] > 170) {
+        data[idx] = 255;
+        data[idx + 1] = 255;
+        data[idx + 2] = 255;
+      } else if (data[idx] < 85 && data[idx + 1] < 85 && data[idx + 2] < 85) {
+        data[idx] = 0;
+        data[idx + 1] = 0;
+        data[idx + 2] = 0;
+      }
+    }
+  }
+  
+  for (let i = 0; i < data.length; i += 4) {
+    if (data[i] > 200 && data[i + 1] > 200 && data[i + 2] > 200) {
+      data[i] = 255;
+      data[i + 1] = 255;
+      data[i + 2] = 255;
+    } else if (data[i] < 50 && data[i + 1] < 50 && data[i + 2] < 50) {
+      data[i] = 0;
+      data[i + 1] = 0;
+      data[i + 2] = 0;
+    }
+  }
+}
+
+function applyGlitchCore(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  
+  for (let y = 0; y < height; y++) {
+    const rShift = Math.floor(Math.random() * 10) - 5;
+    const gShift = Math.floor(Math.random() * 10) - 5;
+    const bShift = Math.floor(Math.random() * 10) - 5;
+    
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      const rPos = Math.min(Math.max(x + rShift, 0), width - 1);
+      const gPos = Math.min(Math.max(x + gShift, 0), width - 1);
+      const bPos = Math.min(Math.max(x + bShift, 0), width - 1);
+      
+      const rIdx = (y * width + rPos) * 4;
+      const gIdx = (y * width + gPos) * 4;
+      const bIdx = (y * width + bPos) * 4;
+      
+      data[idx] = data[rIdx];
+      data[idx + 1] = data[gIdx + 1];
+      data[idx + 2] = data[bIdx + 2];
+    }
+  }
+  
+  for (let i = 0; i < 10; i++) {
+    const blockX = Math.floor(Math.random() * width);
+    const blockY = Math.floor(Math.random() * height);
+    const blockW = Math.floor(Math.random() * 30) + 10;
+    const blockH = Math.floor(Math.random() * 30) + 10;
+    
+    for (let y = blockY; y < blockY + blockH && y < height; y++) {
+      for (let x = blockX; x < blockX + blockW && x < width; x++) {
+        const idx = (y * width + x) * 4;
+        
+        if (Math.random() < 0.5) {
+          data[idx] = Math.random() * 255;
+          data[idx + 1] = Math.random() * 255;
+          data[idx + 2] = Math.random() * 255;
+        } else {
+          const blockSize = 4;
+          const bx = Math.floor(x / blockSize) * blockSize;
+          const by = Math.floor(y / blockSize) * blockSize;
+          const blockIdx = (by * width + bx) * 4;
+          
+          data[idx] = data[blockIdx];
+          data[idx + 1] = data[blockIdx + 1];
+          data[idx + 2] = data[blockIdx + 2];
+        }
+      }
+    }
+  }
+  
+  for (let y = 0; y < height; y++) {
+    if (Math.random() < 0.1) {
+      const offset = Math.floor(Math.random() * 20) - 10;
+      const height = Math.floor(Math.random() * 3) + 1;
+      
+      for (let ty = y; ty < y + height && ty < height; ty++) {
+        for (let x = 0; x < width; x++) {
+          const sourceX = (x + offset + width) % width;
+          const idx = (ty * width + x) * 4;
+          const sourceIdx = (ty * width + sourceX) * 4;
+          
+          data[idx] = data[sourceIdx];
+          data[idx + 1] = data[sourceIdx + 1];
+          data[idx + 2] = data[sourceIdx + 2];
+        }
+      }
+    }
+  }
+}
+
+function applyRecursion(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const recursionLevels = 3;
+  const scale = 0.4;
+  
+  const tempData = new Uint8ClampedArray(data);
+  
+  for (let level = 1; level <= recursionLevels; level++) {
+    const scaleFactor = Math.pow(scale, level);
+    const offsetX = width * (1 - scaleFactor) / 2;
+    const offsetY = height * (1 - scaleFactor) / 2;
+    
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const idx = (y * width + x) * 4;
+        
+        const subX = Math.floor(offsetX + x * scaleFactor);
+        const subY = Math.floor(offsetY + y * scaleFactor);
+        
+        if (subX >= 0 && subX < width && subY >= 0 && subY < height) {
+          const subIdx = (subY * width + subX) * 4;
+          
+          const alpha = 0.3;
+          data[idx] = data[idx] * (1 - alpha) + tempData[subIdx] * alpha;
+          data[idx + 1] = data[idx + 1] * (1 - alpha) + tempData[subIdx + 1] * alpha;
+          data[idx + 2] = data[idx + 2] * (1 - alpha) + tempData[subIdx + 2] * alpha;
+        }
+      }
+    }
+  }
+}
+
+function applyPixelation3D(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  const pixelSize = 10;
+  const depthScale = 20;
+  
+  for (let y = 0; y < height; y += pixelSize) {
+    for (let x = 0; x < width; x += pixelSize) {
+      const r = data[(y * width + x) * 4];
+      const g = data[(y * width + x) * 4 + 1];
+      const b = data[(y * width + x) * 4 + 2];
+      
+      for (let py = y; py < Math.min(y + pixelSize, height); py++) {
+        for (let px = x; px < Math.min(x + pixelSize, width); px++) {
+          const idx = (py * width + px) * 4;
+          data[idx] = r;
+          data[idx + 1] = g;
+          data[idx + 2] = b;
+        }
+      }
+    }
+  }
+}
+
+function applyTimeWarp(imageData) {
+  if (frameBuffer.length < 5) return;
+  
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  for (let y = 0; y < height; y++) {
+    const warp = Math.sin(y * 0.05 + time) * frameBuffer.length * 0.5;
+    const frameIdx = Math.floor(Math.abs(warp) % frameBuffer.length);
+    const pastFrame = frameBuffer[frameIdx];
+    
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      
+      if (Math.random() < Math.abs(Math.sin(x * 0.01 + time + warp))) {
+        data[idx] = pastFrame.data[idx];
+        data[idx + 1] = pastFrame.data[idx + 1];
+        data[idx + 2] = pastFrame.data[idx + 2];
+      }
+    }
+  }
+}
+
+function applyFourthDimension(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  const centerX = width / 2;
+  const centerY = height / 2;
+  
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      
+      const dx = x - centerX;
+      const dy = y - centerY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      const angle = Math.atan2(dy, dx);
+      
+      const w = Math.sin(time * 0.5) * 20;
+      
+      const newDist = distance * (1 + Math.sin(w * 0.1 + time));
+      const newAngle = angle + Math.cos(distance * 0.05 + w * 2);
+      
+      const newX = Math.floor(centerX + Math.cos(newAngle) * newDist);
+      const newY = Math.floor(centerY + Math.sin(newAngle) * newDist);
+      
+      if (newX >= 0 && newX < width && newY >= 0 && newY < height) {
+        const sourceIdx = (newY * width + newX) * 4;
+        
+        const shift = Math.sin(distance * 0.02 + w * 2);
+        data[idx] = data[idx] * (1 + shift * 0.5);
+        data[idx + 1] = data[idx + 1] * (1 - shift * 0.5);
+        data[idx + 2] = data[idx + 2];
+      }
+    }
+  }
+}
+
+function applyDataBending(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  
+  const operations = [
+    () => {
+      const step = Math.floor(Math.random() * 10) + 2;
+      for (let i = 0; i < data.length - step * 4; i += 4) {
+        data[i] ^= data[i + step * 4];
+        data[i + 1] ^= data[i + 1 + step * 4];
+        data[i + 2] ^= data[i + 2 + step * 4];
+      }
+    },
+    
+    () => {
+      for (let i = 0; i < data.length; i += 8) {
+        if (i + 7 < data.length) {
+          [data[i], data[i + 4]] = [data[i + 4], data[i]];
+          [data[i + 1], data[i + 5]] = [data[i + 5], data[i + 1]];
+          [data[i + 2], data[i + 6]] = [data[i + 6], data[i + 2]];
+        }
+      }
+    },
+    
+    () => {
+      const shift = Math.floor(Math.random() * 3);
+      for (let i = 0; i < data.length; i += 4) {
+        if (i + 4 < data.length) {
+          [data[i], data[i + 1], data[i + 2]] = 
+            [data[i + shift], data[i + 1 + shift], data[i + 2 + shift]];
+        }
+      }
+    },
+    
+    () => {
+      for (let i = 0; i < data.length; i += 4) {
+        [data[i], data[i + 1], data[i + 2]] = 
+          [data[i + 1], data[i + 2], data[i]];
+      }
+    }
+  ];
+  
+  const numOps = Math.floor(Math.random() * 3) + 1;
+  for (let i = 0; i < numOps; i++) {
+    const opIndex = Math.floor(Math.random() * operations.length);
+    operations[opIndex]();
+  }
+}
+
+function applyCircuitBreak(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  for (let i = 0; i < 8; i++) {
+    const startX = Math.floor(Math.random() * width);
+    const startY = Math.floor(Math.random() * height);
+    
+    let x = startX;
+    let y = startY;
+    const steps = Math.floor(Math.random() * 100) + 50;
+    const thickness = Math.floor(Math.random() * 3) + 1;
+    
+    const color = [
+      Math.random() * 100 + 155, 
+      Math.random() * 100 + 155, 
+      Math.random() * 100 + 155  
+    ];
+    
+    for (let step = 0; step < steps; step++) {
+      const t = step / steps;
+      x = startX * (1 - t) + (Math.random() * width) * t + (Math.random() - 0.5) * 20;
+      y = startY * (1 - t) + (Math.random() * height) * t + (Math.random() - 0.5) * 20;
+      
+      if (x >= 0 && x < width && y >= 0 && y < height) {
+        const idx = (Math.floor(y) * width + Math.floor(x)) * 4;
+        
+        data[idx] = color[0];
+        data[idx + 1] = color[1];
+        data[idx + 2] = color[2];
+        
+        for (let gy = -thickness; gy <= thickness; gy++) {
+          for (let gx = -thickness; gx <= thickness; gx++) {
+            const px = Math.floor(x + gx);
+            const py = Math.floor(y + gy);
+            
+            if (px >= 0 && px < width && py >= 0 && py < height) {
+              const idx2 = (py * width + px) * 4;
+              const dist = Math.sqrt(gx * gx + gy * gy);
+              if (dist <= thickness) {
+                const intensity = 1 - dist / thickness;
+                data[idx2] = Math.min(255, data[idx2] + 100 * intensity);
+                data[idx2 + 1] = Math.min(255, data[idx2 + 1] + 150 * intensity);
+                data[idx2 + 2] = Math.min(255, data[idx2 + 2] + 255 * intensity);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+function applyMachineCode(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  
+  for (let y = 0; y < height; y += 10) {
+    if (Math.random() < 0.3) continue;
+    
+    for (let x = 0; x < width; x += 8) {
+      if (Math.random() < 0.7) {
+        const value = Math.floor(Math.random() * 256);
+        
+        for (let by = 0; by < 8 && y + by < height; by++) {
+          for (let bx = 0; bx < 8 && x + bx < width; bx++) {
+            const idx = ((y + by) * width + (x + bx)) * 4;
+            
+            data[idx] = 10;
+            data[idx + 1] = 255;
+            data[idx + 2] = 10;
+          }
+        }
+      }
+    }
+  }
+}
+
+function applyArtifactGeneration(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  
+  const blockSize = 8; 
+  for (let y = 0; y < height; y += blockSize) {
+    for (let x = 0; x < width; x += blockSize) {
+      if (Math.random() < 0.3) { 
+        const rSum = 0, gSum = 0, bSum = 0, count = 0;
+        
+        for (let by = 0; by < blockSize && y + by < height; by++) {
+          for (let bx = 0; bx < blockSize && x + bx < width; bx++) {
+            const idx = ((y + by) * width + (x + bx)) * 4;
+            rSum += data[idx];
+            gSum += data[idx + 1];
+            bSum += data[idx + 2];
+            count++;
+          }
+        }
+        
+        const rAvg = rSum / count;
+        const gAvg = gSum / count;
+        const bAvg = bSum / count;
+        
+        for (let by = 0; by < blockSize && y + by < height; by++) {
+          for (let bx = 0; bx < blockSize && x + bx < width; bx++) {
+            const idx = ((y + by) * width + (x + bx)) * 4;
+            data[idx] = rAvg + (Math.random() - 0.5) * 30;
+            data[idx + 1] = gAvg + (Math.random() - 0.5) * 30;
+            data[idx + 2] = bAvg + (Math.random() - 0.5) * 30;
+          }
+        }
+      }
+    }
+  }
+  
+  for (let i = 0; i < data.length; i += 4) {
+    data[i] = Math.floor(data[i] / 32) * 32;
+    data[i + 1] = Math.floor(data[i + 1] / 32) * 32;
+    data[i + 2] = Math.floor(data[i + 2] / 32) * 32;
+  }
+  
+  for (let y = 1; y < height - 1; y++) {
+    for (let x = 1; x < width - 1; x++) {
+      const idx = (y * width + x) * 4;
+      const idxLeft = (y * width + (x - 1)) * 4;
+      const idxRight = (y * width + (x + 1)) * 4;
+      const idxUp = ((y - 1) * width + x) * 4;
+      const idxDown = ((y + 1) * width + x) * 4;
+      
+      if (Math.abs(data[idx] - data[idxLeft]) > 32 || 
+          Math.abs(data[idx] - data[idxRight]) > 32 || 
+          Math.abs(data[idx] - data[idxUp]) > 32 || 
+          Math.abs(data[idx] - data[idxDown]) > 32) {
+        if (Math.random() < 0.5) {
+          data[idx] = Math.random() * 255;
+          data[idx + 1] = Math.random() * 255;
+          data[idx + 2] = Math.random() * 255;
+        }
+      }
+    }
+  }
+}
+
+function applyQuantumEntanglement(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  for (let i = 0; i < 50; i++) {
+    const x1 = Math.floor(Math.random() * width);
+    const y1 = Math.floor(Math.random() * height);
+    const x2 = Math.floor(Math.random() * width);
+    const y2 = Math.floor(Math.random() * height);
+    const radius = Math.floor(Math.random() * 20) + 10;
+    
+    for (let dy = -radius; dy <= radius; dy++) {
+      for (let dx = -radius; dx <= radius; dx++) {
+        if (dx * dx + dy * dy < radius * radius) {
+          const targetX = x1 + dx;
+          const targetY = y1 + dy;
+          
+          if (targetX >= 0 && targetX < width && targetY >= 0 && targetY < height) {
+            const idx1 = (targetY * width + targetX) * 4;
+            const idx2 = (y2 * width + x2) * 4;
+            
+            if (Math.random() < 0.5) {
+              data[idx1] = (data[idx1] + data[idx2]) / 2;
+              data[idx1 + 1] = (data[idx1 + 1] + data[idx2 + 1]) / 2;
+              data[idx1 + 2] = (data[idx1 + 2] + data[idx2 + 2]) / 2;
+            } else if (Math.random() < 0.7) {
+              data[idx1] = 255 - data[idx2];
+              data[idx1 + 1] = 255 - data[idx2 + 1];
+              data[idx1 + 2] = 255 - data[idx2 + 2];
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+function applyMatrixRain(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  const numDrops = width / 10;
+  
+  for (let dropIdx = 0; dropIdx < numDrops; dropIdx++) {
+    const x = Math.floor(dropIdx * 10 + (Math.random() * 5 - 2.5));
+    if (x < 0 || x >= width) continue;
+    
+    const startY = (time * 100 + dropIdx * 50) % (height * 2) - height;
+    const dropLength = Math.floor(Math.random() * 20) + 10;
+    
+    for (let y = Math.floor(startY); y < Math.floor(startY + dropLength) && y < height; y++) {
+      const idx = (y * width + x) * 4;
+      
+      data[idx] = 20;
+      data[idx + 1] = 220;
+      data[idx + 2] = 20;
+    }
+    
+    const headY = Math.floor(startY);
+    if (headY >= 0 && headY < height) {
+      const idx = (headY * width + x) * 4;
+      data[idx] = 255;
+      data[idx + 1] = 255;
+      data[idx + 2] = 255;
+    }
+  }
+}
+
+function applyHologramGlitch(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  for (let y = 0; y < height; y++) {
+    const scanline = Math.sin(y * 0.1 + time * 3) * 0.5 + 0.5;
+    
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      
+      data[idx] = data[idx] * (1 - scanline) + 0 * scanline;
+      data[idx + 1] = data[idx + 1] * (1 - scanline) + 100 * scanline;
+      data[idx + 2] = data[idx + 2] * (1 - scanline) + 255 * scanline;
+    }
+  }
+  
+  for (let y = 0; y < height; y++) {
+    if (Math.sin(y * 0.2 + time * 2) > 0.7) {
+      for (let x = 0; x < width; x++) {
+        const idx = (y * width + x) * 4;
+        data[idx] = Math.min(255, data[idx] + 50);
+        data[idx + 1] = Math.min(255, data[idx + 1] + 50);
+        data[idx + 2] = Math.min(255, data[idx + 2] + 50);
+      }
+    }
+  }
+  
+  if (Math.sin(time * 10) > 0.9) {
+    for (let i = 0; i < data.length; i += 4) {
+      data[i] *= 1.2;
+      data[i + 1] *= 1.2;
+      data[i + 2] *= 1.2;
+    }
+  }
+  
+  if (Math.random() < 0.1) {
+    const glitchY = Math.floor(Math.random() * height);
+    const glitchHeight = Math.floor(Math.random() * 10) + 5;
+    const offset = Math.floor(Math.random() * 20) - 10;
+    
+    for (let y = glitchY; y < glitchY + glitchHeight && y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const sourceX = (x + offset + width) % width;
+        const idx = (y * width + x) * 4;
+        const sourceIdx = (y * width + sourceX) * 4;
+        
+        data[idx] = data[sourceIdx];
+        data[idx + 1] = data[sourceIdx + 1];
+        data[idx + 2] = data[sourceIdx + 2];
+      }
+    }
+  }
+}
+
+function applySinWave(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      
+      const wave = Math.sin(x * 0.05 + y * 0.05 + time * 2);
+      const effect = wave * 0.5 + 0.5;
+      
+      data[idx] = data[idx] * (1 - effect) + (data[idx] * Math.sin(time)) * effect;
+      data[idx + 1] = data[idx + 1] * (1 - effect) + (data[idx + 1] * Math.sin(time + 2)) * effect;
+      data[idx + 2] = data[idx + 2] * (1 - effect) + (data[idx + 2] * Math.sin(time + 4)) * effect;
+    }
+  }
+}
+
+function applyCosWave(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      
+      const wave = Math.cos(x * 0.05 + y * 0.05 + time * 2);
+      const effect = wave * 0.5 + 0.5;
+      
+      data[idx] = data[idx] * (1 - effect) + (data[idx] * Math.cos(time)) * effect;
+      data[idx + 1] = data[idx + 1] * (1 - effect) + (data[idx + 1] * Math.cos(time + 2)) * effect;
+      data[idx + 2] = data[idx + 2] * (1 - effect) + (data[idx + 2] * Math.cos(time + 4)) * effect;
+    }
+  }
+}
+
+function applyTanWave(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      
+      const angle = (x / width) * Math.PI * 2 + time;
+      const wave = Math.tan(angle);
+      const effect = Math.min(1, wave * 0.2 + 0.5);
+      
+      data[idx] = data[idx] * (1 - effect) + (255 - data[idx]) * effect;
+      data[idx + 1] = data[idx + 1] * (1 - effect) + (255 - data[idx + 1]) * effect;
+      data[idx + 2] = data[idx + 2] * (1 - effect) + (255 - data[idx + 2]) * effect;
+    }
+  }
+}
+
+function applyByteShift(imageData) {
+  const data = imageData.data;
+  const pixelCount = data.length / 4;
+  
+  const blockSize = 100;
+  const numBlocks = Math.floor(pixelCount / blockSize);
+  
+  for (let b = 0; b < numBlocks; b++) {
+    if (Math.random() < 0.1) {
+      const blockStart = b * blockSize * 4;
+      const shift = Math.floor(Math.random() * 3);
+      
+      for (let i = 0; i < blockSize * 4; i += 4) {
+        if (blockStart + i + 4 < data.length) {
+          data[blockStart + i] = data[blockStart + i + shift];
+          data[blockStart + i + 1] = data[blockStart + i + 1 + shift];
+          data[blockStart + i + 2] = data[blockStart + i + 2 + shift];
+        }
+      }
+    }
+  }
+  
+  for (let i = 0; i < 500; i++) {
+    const pos1 = Math.floor(Math.random() * (data.length - 4));
+    const pos2 = Math.floor(Math.random() * (data.length - 4));
+    
+    data[pos1] = data[pos2];
+    data[pos2] = data[pos1];
+  }
+  
+  if (Math.random() < 0.3) {
+    const offset = Math.floor(Math.random() * 100);
+    const tempData = new Uint8ClampedArray(data);
+    
+    for (let i = 0; i < data.length - offset; i++) {
+      data[i] = tempData[i + offset];
+    }
+  }
+}
+
+function applyHarmonicDistortion(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  for (let y = 0; y < height; y++) {
+    const wave = Math.sin(y * 0.1 + time) * 20;
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      
+      const harmonic1 = Math.sin(x * 0.02 + time);
+      const harmonic2 = Math.sin(x * 0.05 + time * 1.5) * 0.5;
+      const harmonic3 = Math.sin(x * 0.1 + time * 0.7) * 0.25;
+      
+      const compound = (harmonic1 + harmonic2 + harmonic3) / 1.75;
+      const distortionY = Math.floor(compound * 10);
+      
+      const sourceY = Math.max(0, Math.min(height - 1, y + distortionY));
+      const sourceIdx = (sourceY * width + x) * 4;
+      
+      data[idx] = data[sourceIdx] * (1 + harmonic1 * 0.2);
+      data[idx + 1] = data[sourceIdx + 1] * (1 + harmonic2 * 0.2);
+      data[idx + 2] = data[sourceIdx + 2] * (1 + harmonic3 * 0.2);
+    }
+  }
+}
+
+function applyCellularShift(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  if (!window.cellularState) {
+    window.cellularState = new Uint8Array(width * height);
+    for (let i = 0; i < window.cellularState.length; i++) {
+      if (Math.random() < 0.1) {
+        window.cellularState[i] = 1;
+      } else {
+        window.cellularState[i] = 0;
+      }
+    }
+  }
+  
+  const newState = new Uint8Array(window.cellularState);
+  
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const i = y * width + x;
+      
+      let count = 0;
+      
+      for (let ny = -1; ny <= 1; ny++) {
+        for (let nx = -1; nx <= 1; nx++) {
+          const nx2 = x + nx + width;
+          const ny2 = y + ny + height;
+          const ni = (ny2 % height) * width + (nx2 % width);
+          if (window.cellularState[ni] === 1) count++;
+        }
+      }
+      
+      if (count > 3) {
+        newState[i] = 1;
+      }
+    }
+  }
+  
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const i = y * width + x;
+      const idx = i * 4;
+      
+      if (newState[i] === 1) {
+        const shiftX = Math.floor(Math.random() * 10) - 5;
+        const shiftY = Math.floor(Math.random() * 10) - 5;
+        
+        const sourceX = Math.min(Math.max(x + shiftX, 0), width - 1);
+        const sourceY = Math.min(Math.max(y + shiftY, 0), height - 1);
+        const sourceIdx = (sourceY * width + sourceX) * 4;
+        
+        data[idx] = data[sourceIdx];
+        data[idx + 1] = data[sourceIdx + 1];
+        data[idx + 2] = data[sourceIdx + 2];
+      }
+    }
+  }
+  
+  window.cellularState = newState;
+}
+
+function applyDigitalDecay(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  
+  if (!window.decayMap) {
+    window.decayMap = new Uint8Array(width * height);
+    for (let i = 0; i < window.decayMap.length; i++) {
+      window.decayMap[i] = Math.floor(Math.random() * 50) + 50;
+    }
+  }
+  
+  const newDecay = new Uint8Array(window.decayMap);
+  
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const i = y * width + x;
+      
+      window.decayMap[i] = Math.max(0, window.decayMap[i] - Math.floor(Math.random() * 3));
+      
+      if (window.decayMap[i] > 0) {
+        const idx = i * 4;
+        
+        const decayStrength = window.decayMap[i] / 100;
+        
+        if (decayStrength > 0.7) {
+          data[idx] = 0;
+          data[idx + 1] = 0;
+          data[idx + 2] = 0;
+        } else if (decayStrength > 0.4) {
+          data[idx] = data[idx] * 0.8;
+          data[idx + 1] = data[idx + 1] * 0.8;
+          data[idx + 2] = data[idx + 2] * 0.8;
+        } else if (decayStrength > 0.2) {
+          data[idx] = data[idx] * 0.9;
+          data[idx + 1] = data[idx + 1] * 0.9;
+          data[idx + 2] = data[idx + 2] * 0.9;
+        } else {
+          const noise = (Math.random() - 0.5) * 20 * decayStrength;
+          data[idx] += noise;
+          data[idx + 1] += noise;
+          data[idx + 2] += noise;
+        }
+      }
+    }
+  }
+  
+  if (Math.random() < 0.05) {
+    for (let i = 0; i < 5; i++) {
+      const x = Math.floor(Math.random() * width);
+      const y = Math.floor(Math.random() * height);
+      newDecay[y * width + x] = Math.floor(Math.random() * 50) + 50;
+    }
+  }
+  
+  window.decayMap = newDecay;
+}
+
+function applyFractalMosaic(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  const centerX = width / 2;
+  const centerY = height / 2;
+  
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      
+      const zx = (x - centerX) / (width * 0.25);
+      const zy = (y - centerY) / (height * 0.25);
+      
+      const c_real = Math.sin(time) * 0.7;
+      const c_imag = Math.cos(time * 1.5) * 0.7;
+      
+      let cx = zx;
+      let cy = zy;
+      let iteration = 0;
+      const maxIteration = 20;
+      
+      while (cx * cx + cy * cy < 4 && iteration < maxIteration) {
+        const aa = cx * cx - cy * cy + c_real;
+        const bb = 2 * cx * cy + c_imag;
+        cx = aa;
+        cy = bb;
+        iteration++;
+      }
+      
+      if (iteration < maxIteration) {
+        const smoothColor = iteration + 1 - Math.log(Math.log(cx * cx + cy * cy)) / Math.log(2);
+        const hue = (smoothColor * 10 + time * 20) % 360;
+        
+        const [r, g, b] = hslToRgb(hue / 360, 0.8, 0.5);
+        
+        const cellX = Math.floor(x / 10) * 10;
+        const cellY = Math.floor(y / 10) * 10;
+        const cellIdx = (cellY * width + cellX) * 4;
+        
+        data[idx] = data[cellIdx];
+        data[idx + 1] = data[cellIdx + 1];
+        data[idx + 2] = data[cellIdx + 2];
+        
+        if (Math.random() < 0.1) {
+          data[idx] = 255 - data[idx];
+          data[idx + 1] = 255 - data[idx + 1];
+          data[idx + 2] = 255 - data[idx + 2];
+        }
+      }
+    }
+  }
+}
 </script>
 </body>
 </html>
