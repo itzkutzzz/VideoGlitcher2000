@@ -16,11 +16,76 @@
             background-color: #000;
             color: #0f0;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
             min-height: 100vh;
-            overflow: hidden;
+            overflow-x: hidden;
             position: relative;
+        }
+
+        .topbar {
+            width: 100%;
+            height: 60px;
+            background-color: rgba(0, 20, 0, 0.9);
+            border-bottom: 1px solid #0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+        }
+
+        .brand {
+            font-family: 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #0f0;
+            text-shadow: 0 0 8px #0f0;
+            letter-spacing: 1px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-tab {
+            color: #0f0;
+            text-decoration: none;
+            font-size: 1.1rem;
+            position: relative;
+            padding: 5px 10px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab:hover {
+            color: #fff;
+            text-shadow: 0 0 10px #0f0, 0 0 20px #0f0;
+        }
+
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #0f0;
+            transition: width 0.3s ease;
+        }
+
+        .nav-tab:hover::before {
+            width: 100%;
+        }
+
+        .active {
+            color: #fff;
+            text-shadow: 0 0 10px #0f0;
+        }
+
+        .active::before {
+            width: 100%;
         }
 
         .container {
@@ -35,6 +100,8 @@
             background-color: rgba(0, 0, 0, 0.7);
             border: 1px solid #0f0;
             box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+            margin: auto;
+            flex: 1;
         }
 
         .glitch-text {
@@ -189,6 +256,15 @@
     </script>
 </head>
 <body>
+    <div class="topbar">
+        <div class="brand">VIDEO GLITCHING</div>
+        <div class="nav-tabs">
+            <a href="https://video-glitching-2.vercel.app/" class="nav-tab">Home</a>
+            <a href="https://video-glitching-2.vercel.app/EXPLANATION.html" class="nav-tab">Explanation</a>
+            <a href="https://video-glitching-2.vercel.app/LICENSE.html" class="nav-tab active">License</a>
+        </div>
+        <div></div> <!-- Empty div for flex spacing -->
+    </div>
     <div class="container">
         <div class="glitch-text">
             <h1><span class="glitch" data-text="VIDEO GLITCHER 2025">VIDEO GLITCHER 2025</span></h1>
@@ -216,8 +292,8 @@
         const config = {
             matrixSpeed: 50,
             maxDrops: 100,
-            glitchFrequency: 3000,
-            glitchDuration: 200,
+            glitchFrequency: 1500,
+            glitchDuration: 300,
             textAnimationDuration: 1.5
         };
 
@@ -276,10 +352,10 @@
             
             startGlitchEffect() {
                 this.glitchInterval = setInterval(() => {
-                    if (Math.random() > 0.7) {
+                    if (Math.random() > 0.5) {
                         this.triggerGlitch();
                     }
-                }, 2000);
+                }, config.glitchFrequency);
             }
             
             triggerGlitch() {
@@ -287,24 +363,55 @@
                 
                 glitchElements.forEach(el => {
                     el.classList.add('glitching');
+                    
                     gsap.to(el, {
-                        x: Math.random() * 10 - 5,
-                        y: Math.random() * 6 - 3,
-                        skewX: Math.random() * 10 - 5,
+                        x: Math.random() * 20 - 10,
+                        y: Math.random() * 10 - 5,
+                        skewX: Math.random() * 20 - 10,
+                        skewY: Math.random() * 10 - 5,
+                        scaleX: 1 + Math.random() * 0.1 - 0.05,
+                        opacity: Math.random() * 0.3 + 0.7,
                         duration: 0.1,
                         onComplete: () => {
                             gsap.to(el, {
-                                x: 0,
-                                y: 0,
-                                skewX: 0,
+                                x: Math.random() * 10 - 5,
+                                y: Math.random() * 6 - 3,
+                                skewX: Math.random() * -15,
+                                opacity: Math.random() * 0.2 + 0.8,
                                 duration: 0.1,
                                 onComplete: () => {
-                                    el.classList.remove('glitching');
+                                    gsap.to(el, {
+                                        x: 0,
+                                        y: 0,
+                                        skewX: 0,
+                                        skewY: 0,
+                                        scaleX: 1,
+                                        opacity: 1,
+                                        duration: 0.15,
+                                        onComplete: () => {
+                                            el.classList.remove('glitching');
+                                        }
+                                    });
                                 }
                             });
                         }
                     });
                 });
+                
+                if (Math.random() > 0.5) {
+                    document.querySelectorAll('h1, h2').forEach(el => {
+                        gsap.to(el, {
+                            color: Math.random() > 0.5 ? '#ff0' : '#0ff',
+                            duration: 0.1,
+                            onComplete: () => {
+                                gsap.to(el, {
+                                    color: '#0f0',
+                                    duration: 0.2
+                                });
+                            }
+                        });
+                    });
+                }
             }
             
             animateText() {
@@ -324,10 +431,19 @@
                 });
             }
         }
+        
         window.addEventListener('DOMContentLoaded', () => {
             const hackerEffects = new HackerEffects();
+            
+            const currentPage = window.location.href;
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                if (currentPage.includes(tab.getAttribute('href'))) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
         });
     </script>
-</div>
 </body>
 </html>
