@@ -1,0 +1,255 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIDEO GLITCHING 2</title>
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #33ff00;
+        --glitch-color-1: #ff00ff;
+        --glitch-color-2: #00ffff;
+        --logo-font: 'JetBrains Mono', monospace;
+        --content-font: 'VT323', monospace;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: var(--content-font);
+        overflow: hidden;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .topbar {
+        display: flex;
+        align-items: center;
+        padding: 1rem 2rem;
+        background-color: rgba(0, 0, 0, 0.8);
+        border-bottom: 1px solid var(--text-color);
+        position: relative;
+        z-index: 100;
+    }
+
+    .logo {
+        font-family: var(--logo-font);
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--text-color);
+        text-shadow: 0 0 10px var(--text-color);
+        letter-spacing: 1px;
+    }
+
+    .container {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        z-index: 10;
+    }
+
+    .glitch-link {
+        text-decoration: none;
+        position: relative;
+        font-size: 2.5rem;
+        font-family: var(--content-font);
+        color: var(--text-color);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        padding: 20px 40px;
+        border: 2px solid var(--text-color);
+        border-radius: 4px;
+        background-color: rgba(0, 0, 0, 0.7);
+        box-shadow: 0 0 15px var(--text-color);
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+
+    .glitch-link:hover {
+        background-color: rgba(51, 255, 0, 0.1);
+        box-shadow: 0 0 30px var(--text-color);
+        transform: scale(1.05);
+    }
+
+    .glitch-text {
+        position: relative;
+        display: inline-block;
+    }
+
+    .glitch-text::before,
+    .glitch-text::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.8;
+    }
+
+    .glitch-text::before {
+        color: var(--glitch-color-1);
+        z-index: -1;
+    }
+
+    .glitch-text::after {
+        color: var(--glitch-color-2);
+        z-index: -2;
+    }
+
+    .glitch-link:hover .glitch-text::before {
+        animation: glitch-1 0.3s linear infinite alternate;
+    }
+
+    .glitch-link:hover .glitch-text::after {
+        animation: glitch-2 0.3s linear infinite alternate;
+    }
+
+    @keyframes glitch-1 {
+        0% {
+            transform: translate(-2px, 2px);
+        }
+        100% {
+            transform: translate(2px, -2px);
+        }
+    }
+
+    @keyframes glitch-2 {
+        0% {
+            transform: translate(2px, -2px);
+        }
+        100% {
+            transform: translate(-2px, 2px);
+        }
+    }
+
+    .matrix-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+    }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <div class="logo">VIDEO GLITCHING 2</div>
+    </div>
+    
+    <div class="container">
+        <a href="https://video-glitching-2.vercel.app/main.html" class="glitch-link">
+            <span class="glitch-text" data-text="TO THE ACTUAL GLITCHER!">TO THE ACTUAL GLITCHER!</span>
+        </a>
+    </div>
+    
+    <div class="matrix-container" id="matrix-container"></div>
+
+    <script>
+    const config = {
+        matrixCharacters: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ｦｧｨｩｪｫｬｭｮｯｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ',
+        matrixColor: '#33ff00',
+        matrixFont: 'monospace',
+        fontSize: 14,
+        columnWidth: 20,
+        dropSpeed: 1,
+        resetProbability: 0.98,
+        refreshRate: 50,
+        defaultColor: '#33ff00',
+        hoverColor: '#ff3300',
+        glitchInterval: {
+            min: 1000,
+            max: 3000
+        }
+    };
+
+    document.addEventListener('DOMContentLoaded', function() {
+        initMatrix();
+        initGlitchEffect();
+    });
+
+    function initMatrix() {
+        const canvas = document.createElement('canvas');
+        const container = document.getElementById('matrix-container');
+        container.appendChild(canvas);
+        
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const characters = config.matrixCharacters;
+        const columns = Math.floor(canvas.width / config.columnWidth);
+        const drops = [];
+        for (let i = 0; i < columns; i++) {
+            drops[i] = Math.random() * -canvas.height;
+        }
+        
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+          
+            ctx.fillStyle = config.matrixColor;
+            ctx.font = config.fontSize + 'px ' + config.matrixFont;
+            for (let i = 0; i < drops.length; i++) {
+                const text = characters.charAt(Math.floor(Math.random() * characters.length));
+                ctx.fillText(text, i * config.columnWidth, drops[i]);
+                drops[i] += config.dropSpeed;
+                if (drops[i] > canvas.height && Math.random() > config.resetProbability) {
+                    drops[i] = Math.random() * -100;
+                }
+            }
+        }
+        setInterval(draw, config.refreshRate);
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const newColumns = Math.floor(canvas.width / config.columnWidth);
+            if (newColumns > drops.length) {
+                for (let i = drops.length; i < newColumns; i++) {
+                    drops[i] = Math.random() * -canvas.height;
+                }
+            } else {
+                drops.length = newColumns;
+            }
+        });
+    }
+
+    function initGlitchEffect() {
+        const glitchLink = document.querySelector('.glitch-link');
+        
+        function randomGlitch() {
+            const textElement = glitchLink.querySelector('.glitch-text');
+            textElement.style.transform = `translate(${Math.random() * 4 - 2}px, ${Math.random() * 4 - 2}px)`;
+            const beforeEl = textElement.querySelector('::before');
+            const afterEl = textElement.querySelector('::after');
+            setTimeout(() => {
+                textElement.style.transform = '';
+            }, 50);
+            setTimeout(randomGlitch, Math.random() * 2000 + 1000);
+        }
+        setTimeout(randomGlitch, 2000);
+        glitchLink.addEventListener('mouseover', () => {
+            document.documentElement.style.setProperty('--text-color', config.hoverColor);
+        });
+        
+        glitchLink.addEventListener('mouseout', () => {
+            document.documentElement.style.setProperty('--text-color', config.defaultColor);
+        });
+    }
+    </script>
+</body>
+</html>
