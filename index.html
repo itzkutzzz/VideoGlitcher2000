@@ -2,8 +2,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIDEO GLITCHING 3</title>
-    <link rel="icon" href="https://res.cloudinary.com/ft-bounty/image/upload/c_fill,g_auto/v1743057859568/nvft-user-files/production/5c590c13-7f05-4fcf-afca-111f9c43cc81/uploads/70accb76-7a4b-4b05-82e4-11f7b958b36e/original.octet-stream" type="image/x-icon">
+    <title>VIDEO GLITCHING 3 HUB</title>
+  <link rel="icon" href="https://res.cloudinary.com/ft-bounty/image/upload/c_fill,g_auto/v1743057859568/nvft-user-files/production/5c590c13-7f05-4fcf-afca-111f9c43cc81/uploads/70accb76-7a4b-4b05-82e4-11f7b958b36e/original.octet-stream" type="image/x-icon">
     <style>
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
@@ -59,6 +59,8 @@
         align-items: center;
         position: relative;
         z-index: 10;
+        flex-direction: column;
+        gap: 2rem;
     }
 
     .glitch-link {
@@ -145,16 +147,32 @@
         z-index: 1;
         pointer-events: none;
     }
+
+    .explanation-link {
+        font-size: 1.8rem;
+        padding: 15px 30px;
+    }
+
+    .license-link {
+        font-size: 1.8rem;
+        padding: 15px 30px;
+    }
     </style>
 </head>
 <body>
     <div class="topbar">
-        <div class="logo">VIDEO GLITCHING 3</div>
+        <div class="logo">VIDEO GLITCHING 2</div>
     </div>
     
     <div class="container">
         <a href="https://video-glitching-2.vercel.app/main.html" class="glitch-link">
             <span class="glitch-text" data-text="TO THE ACTUAL GLITCHER!">TO THE ACTUAL GLITCHER!</span>
+        </a>
+        <a href="https://video-glitching-2.vercel.app/EXPLANATION.html" class="glitch-link explanation-link">
+            <span class="glitch-text" data-text="WHAT IS THIS WEBSITE?">WHAT IS THIS WEBSITE?</span>
+        </a>
+        <a href="https://video-glitching-2.vercel.app/LICENSE.html" class="glitch-link license-link">
+            <span class="glitch-text" data-text="OUR LICENSE">OUR LICENSE</span>
         </a>
     </div>
     
@@ -202,7 +220,7 @@
         function draw() {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-          
+            
             ctx.fillStyle = config.matrixColor;
             ctx.font = config.fontSize + 'px ' + config.matrixFont;
             for (let i = 0; i < drops.length; i++) {
@@ -252,6 +270,5 @@
         });
     }
     </script>
-        <div class="logo">VIDEO GLITCHING</div>
 </body>
 </html>
