@@ -1,1 +1,1824 @@
 
+<html>
+<head>
+  <title>VID GLITCHING 2000</title>
+  <style>
+    body {
+      background: #111;
+      color: #0f0;
+      font-family: monospace;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 800px;
+      width: 100%;
+    }
+
+    #videoContainer {
+      position: relative;
+      margin: 20px 0;
+      background: #000;
+      border: 2px solid #0f0;
+      min-height: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+      max-width: 100%;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+      align-items: center;
+    }
+
+    button, input, select {
+      background: #000;
+      color: #0f0;
+      border: 1px solid #0f0;
+      padding: 10px;
+      font-family: monospace;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    button.active {
+      background: #0f0;
+      color: #000;
+    }
+
+    button:hover {
+      background: #0f0;
+      color: #000;
+    }
+
+    .glitch-animation {
+      animation: glitch 0.5s infinite;
+    }
+
+    .section-title {
+      margin-top: 20px;
+      border-bottom: 1px solid #0f0;
+      padding-bottom: 5px;
+    }
+
+    .audio-controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .slider-container {
+      margin: 10px 0;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+
+    #rowShift {
+      width: 100%;
+      margin: 5px 0;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      background: #000;
+    }
+
+    #instructions {
+      color: #0f0;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    @keyframes glitch {
+      0% { transform: translate(0) }
+      20% { transform: translate(-2px, 2px) }
+      40% { transform: translate(-2px, -2px) }
+      60% { transform: translate(2px, 2px) }
+      80% { transform: translate(2px, -2px) }
+      100% { transform: translate(0) }
+    }
+
+    .frame-effects,
+    @keyframes rainbow-border,
+    @keyframes shake,
+    @keyframes float,
+    @keyframes pulse,
+    @keyframes rotate,
+    .rainbow-border,
+    .shake,
+    .float,
+    .pulse,
+    .rotate,
+    .trail,
+    .glow {
+      display: none;
+    }
+    #downloadModal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.9);
+    }
+
+    .modal-content {
+      background-color: #111;
+      margin: 10% auto;
+      padding: 20px;
+      border: 2px solid #0f0;
+      width: 80%;
+      max-width: 800px;
+      text-align: center;
+    }
+
+    #sourceVideo {
+      max-width: 100%;
+      border: 1px solid #0f0;
+    }
+
+    .download-controls {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    #downloadOptions {
+      margin-top: 20px;
+      border-top: 1px solid #0f0;
+      padding-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="glitch-animation">Glitch Video & Audio Generator</h1>
+    <p id="instructions">Select a video file to begin. Audio effects will be enabled after video selection.</p>
+    <input type="file" id="videoInput" accept="video/*">
+    
+    <div id="videoContainer">
+      <canvas id="canvas"></canvas>
+    </div>
+
+    <h2 class="section-title">Video Effects</h2>
+    <div class="controls">
+      <button id="rgbSplit">RGB Split</button>
+      <button id="noise">Noise</button>
+      <button id="scanlines">Scanlines</button>
+      <button id="pixelate">Pixelate</button>
+      <button id="videoCrush">Video Crush</button>
+      <button id="shuffle">Pixel Shuffle</button>
+      <button id="rainbow">Rainbow</button>
+      <button id="invert">Invert</button>
+      <button id="desaturate">Desaturate</button>
+      <button id="contrast">High Contrast</button>
+      <button id="frameRandomizer">Frame Randomizer</button>
+      <button id="lag">Lag</button>
+      <button id="motionTrail">Motion Trail</button>
+      <button id="redTint">Red Tint</button>
+      <button id="videoStatic">Video Static</button>
+      <button id="signalCorruption">Signal Corruption</button>
+      <button id="dataMosh">Data Mosh</button>
+      <button id="blocksGlitch">Blocks Glitch</button>
+      <button id="tearingEffect">Screen Tearing</button>
+      <button id="colorShift">Extreme Color Shift</button>
+      <button id="ghosting">Digital Ghosting</button>
+      <button id="chromaticAberration">Chromatic Aberration</button>
+      <button id="waveform">Waveform Distortion</button>
+      <button id="mirrorGlitch">Mirror Glitch</button>
+      <button id="timeDisplacement">Time Displacement</button>
+      <button id="pixelSort">Pixel Sort</button>
+      <button id="compressionArtifacts">Compression Artifacts</button>
+      <button id="glitchWalk">Glitch Walk</button>
+      <button id="interlace">Digital Interlace</button>
+      <button id="phosphor">Phosphor Burn</button>
+      <button id="analogDrift">Analog Drift</button>
+      <button id="vhsTracking">VHS Tracking</button>
+      <button id="digitalTear">Digital Tear</button>
+      <button id="acidWash">Acid Wash</button>
+      <button id="plasmaWave">Plasma Wave</button>
+      <button id="bitrot">Digital Bitrot</button>
+      <button id="frequencyShift">Frequency Shift</button>
+      <button id="analogBleed">Analog Bleed</button>
+      <button id="timeStretch">Time Stretch</button>
+      <button id="digitalSmear">Digital Smear</button>
+      <button id="quantumGlitch">Quantum Glitch</button>
+      <button id="fractalNoise">Fractal Noise</button>
+      <button id="signalBleed">Signal Bleed</button>
+      <button id="memoryLeak">Memory Leak</button>
+    </div>
+
+    <div class="slider-container">
+      <label for="staticAmount">Video Static Amount</label>
+      <input type="range" id="staticAmount" min="0" max="100" value="0">
+    </div>
+    <div class="slider-container">
+      <label for="rowShift">Row Shift</label>
+      <input type="range" id="rowShift" min="-100" max="100" value="0">
+    </div>
+    <div class="slider-container">
+      <label for="brightness">Brightness</label>
+      <input type="range" id="brightness" min="-100" max="100" value="0">
+    </div>
+    <div class="slider-container">
+      <label for="displayShift">Display Shift</label>
+      <input type="range" id="displayShift" min="-100" max="100" value="0">
+    </div>
+
+    <h2 class="section-title">Audio Effects</h2>
+    <div class="audio-controls">
+      <div class="slider-container">
+        <label for="distortion">Distortion</label>
+        <input type="range" id="distortion" min="1" max="100" value="1">
+      </div>
+      <div class="slider-container">
+        <label for="amplification">Amplification</label>
+        <input type="range" id="amplification" min="1" max="100" value="100">
+      </div>  
+      <div class="slider-container">
+        <label for="basstreble">Bass & Treble</label>
+        <input type="range" id="basstreble" min="1" max="100" value="1">
+      </div>
+      <div class="slider-container">
+        <label for="static">Static</label>
+        <input type="range" id="static" min="0" max="100" value="0">
+      </div>
+      <div class="slider-container">
+        <label for="reverb">Reverb</label>
+        <input type="range" id="reverb" min="0" max="100" value="0">
+      </div>
+      <div class="slider-container">
+        <button id="audioReverse">Reverse Audio</button>
+      </div>
+    </div>
+
+    <div id="downloadOptions">
+      <h2 class="section-title">Download Options</h2>
+      <div class="controls">
+        <button id="recordButton">Record Media</button>
+        <button id="downloadSourceButton">Download Source</button>
+      </div>
+    </div>
+    <div id="downloadModal">
+      <div class="modal-content">
+        <h2>Video Source</h2>
+        <video id="sourceVideo" controls controlsList="download"></video>
+        <div class="download-controls">
+          <button id="closeSourceModal">Close</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+let audioContext = null;
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const videoInput = document.getElementById('videoInput');
+let video = null;
+let source;
+let distortionNode;
+let analyzer;
+let gainNode;
+let bassTrebleNode;
+let trebleNode;
+let staticNode;
+let reverbNode;
+let activeEffects = new Set();
+let isProcessing = false;
+let offscreenCanvas = document.createElement('canvas');
+let offscreenCtx = offscreenCanvas.getContext('2d');
+let rowShiftAmount = 0;
+let displayShiftAmount = 0;
+let lastFrameTime = 0;
+const targetFPS = 30;
+const frameInterval = 1000 / targetFPS;
+let frameBuffer = [];
+const FRAME_BUFFER_SIZE = 30;
+let currentNoise = null;
+let lastFrameBuffer = null;
+let frameSkipCounter = 0;
+let lagIntensity = 0;
+let previousFrame = null;
+let motionTrailFrames = [];
+const TRAIL_LENGTH = 5;
+
+let isReversed = false;
+let originalVideo = null;
+let reversedVideo = null;
+let audioReversed = false;
+let audioBuffer = null;
+
+let staticAmount = 0;
+
+function initAudio() {
+  distortionNode = audioContext.createWaveShaper();
+  analyzer = audioContext.createAnalyser();
+  gainNode = audioContext.createGain();
+  bassTrebleNode = audioContext.createBiquadFilter();
+  trebleNode = audioContext.createBiquadFilter();
+  staticNode = audioContext.createGain();
+  reverbNode = audioContext.createConvolver();
+  createReverb().then(buffer => {
+    reverbNode.buffer = buffer;
+  });
+  source.connect(distortionNode);
+  distortionNode.connect(staticNode);
+  staticNode.connect(reverbNode);
+  reverbNode.connect(bassTrebleNode);
+  staticNode.connect(bassTrebleNode);
+  bassTrebleNode.connect(trebleNode);
+  trebleNode.connect(gainNode);
+  gainNode.connect(analyzer);
+  analyzer.connect(audioContext.destination);
+  
+  bassTrebleNode.type = 'lowshelf';
+  bassTrebleNode.frequency.value = 100;
+  trebleNode.type = 'highshelf';
+  trebleNode.frequency.value = 10000;
+  gainNode.gain.value = 1;
+  bassTrebleNode.gain.value = 0;
+  trebleNode.gain.value = 0;
+}
+async function createReverb() {
+  const length = 2;
+  const decay = 2.0;
+  const sampleRate = audioContext.sampleRate;
+  const bufferLength = length * sampleRate;
+  const buffer = audioContext.createBuffer(2, bufferLength, sampleRate);
+  
+  for (let channel = 0; channel < 2; channel++) {
+    const channelData = buffer.getChannelData(channel);
+    for (let i = 0; i < bufferLength; i++) {
+      const t = i / sampleRate;
+      channelData[i] = (Math.random() * 2 - 1) * Math.pow(1 - t / length, decay);
+    }
+  }
+  
+  return buffer;
+}
+
+videoInput.addEventListener('change', function (e) {
+  const file = e.target.files[0];
+  if (file) {
+    frameBuffer = [];
+    if (video) {
+      video.pause();
+      video.currentTime = 0;
+      video.src = '';
+      if (source) {
+        source.disconnect();
+        source = null;
+      }
+      URL.revokeObjectURL(video.src);
+    }
+    if (currentNoise) {
+      currentNoise.stop();
+      currentNoise = null;
+    }
+    document.getElementById('static').value = 0;
+    lastFrameBuffer = null;
+    frameSkipCounter = 0;
+    lagIntensity = 0;
+    document.querySelectorAll('.controls button').forEach(button => {
+      button.classList.remove('active');
+    });
+    videoContainer.className = '';
+    videoContainer.classList.add('video-container');
+    video = document.createElement('video');
+    video.src = URL.createObjectURL(file);
+    video.loop = true;
+    video.muted = false;
+    video.controls = true;
+    video.controlsList = "download";
+    if (!audioContext) {
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    } else if (audioContext.state === 'suspended') {
+      audioContext.resume();
+    }
+    video.addEventListener('loadedmetadata', () => {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      offscreenCanvas.width = video.videoWidth;
+      offscreenCanvas.height = video.videoHeight;
+      source = audioContext.createMediaElementSource(video);
+      initAudio();
+      video.play().catch(function (error) {
+        console.log("Video play failed:", error);
+      });
+      requestAnimationFrame(processFrame);
+    });
+  }
+});
+
+function processFrame(timestamp) {
+  if (timestamp - lastFrameTime < frameInterval) {
+    requestAnimationFrame(processFrame);
+    return;
+  }
+  lastFrameTime = timestamp;
+  if (video && video.readyState === 4) {
+    const scaleFactor = 0.75;
+    const scaledWidth = canvas.width * scaleFactor;
+    const scaledHeight = canvas.height * scaleFactor;
+    offscreenCanvas.width = scaledWidth;
+    offscreenCanvas.height = scaledHeight;
+    offscreenCtx.drawImage(video, 0, 0, scaledWidth, scaledHeight);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(offscreenCanvas, 0, 0, canvas.width, canvas.height);
+    if (frameBuffer.length >= FRAME_BUFFER_SIZE) {
+      frameBuffer.shift();
+    }
+    const frameData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    frameBuffer.push(frameData);
+    let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const data = imageData.data;
+    const width = canvas.width;
+    const height = canvas.height;
+    const tempData = new Uint8ClampedArray(data);
+
+    let shouldApplyEffects = activeEffects.size > 0 || 
+                            rowShiftAmount !== 0 || 
+                            displayShiftAmount !== 0 || 
+                            document.getElementById('brightness').value != 0;
+
+    if (shouldApplyEffects) {
+      if (rowShiftAmount !== 0 || displayShiftAmount !== 0) {
+        for (let y = 0; y < height; y++) {
+          for (let x = 0; x < width; x++) {
+            const idx = (y * width + x) * 4;
+            let sourceX = x;
+
+            if (rowShiftAmount !== 0) {
+              const rowPosition = 1 - y / height;
+              const shift = Math.round(rowShiftAmount / 100 * width * rowPosition);
+              sourceX = (sourceX + width + shift) % width;
+            }
+
+            if (displayShiftAmount !== 0) {
+              const shift = Math.round(displayShiftAmount / 100 * width);
+              sourceX = (sourceX + width + shift) % width;
+            }
+
+            const sourceIdx = (y * width + sourceX) * 4;
+            data[idx] = tempData[sourceIdx];
+            data[idx + 1] = tempData[sourceIdx + 1];
+            data[idx + 2] = tempData[sourceIdx + 2];
+            data[idx + 3] = tempData[sourceIdx + 3];
+          }
+        }
+      }
+      if (activeEffects.has('pixelate')) applyPixelate(imageData);
+      if (activeEffects.has('videoCrush')) applyVideoCrush(imageData);
+      if (activeEffects.has('shuffle')) applyPixelShuffle(imageData);
+      if (activeEffects.has('rgbSplit')) applyRGBSplit(imageData);
+      if (activeEffects.has('noise')) applyNoise(imageData);
+      if (activeEffects.has('scanlines')) applyScanlines(imageData);
+      if (activeEffects.has('rainbow')) applyRainbow(imageData);
+      if (activeEffects.has('frameRandomizer')) applyFrameRandomizer(imageData);
+      if (activeEffects.has('lag')) applyLagEffect(imageData);
+      if (activeEffects.has('invert')) applyInvert(imageData);
+      if (activeEffects.has('desaturate')) applyDesaturate(imageData);
+      if (activeEffects.has('contrast')) applyContrast(imageData);
+      if (activeEffects.has('motionTrail')) applyMotionTrail(imageData);
+      if (activeEffects.has('redTint')) applyRedTint(imageData);
+      if (activeEffects.has('videoStatic')) applyVideoStatic(imageData);
+      if (activeEffects.has('signalCorruption')) applySignalCorruption(imageData);
+      if (activeEffects.has('dataMosh')) applyDataMosh(imageData);
+      if (activeEffects.has('blocksGlitch')) applyBlocksGlitch(imageData);
+      if (activeEffects.has('tearingEffect')) applyTearingEffect(imageData);
+      if (activeEffects.has('colorShift')) applyColorShift(imageData);
+      if (activeEffects.has('ghosting')) applyGhosting(imageData);
+      if (activeEffects.has('chromaticAberration')) applyChromaticAberration(imageData);
+      if (activeEffects.has('waveform')) applyWaveformDistortion(imageData);
+      if (activeEffects.has('mirrorGlitch')) applyMirrorGlitch(imageData);
+      if (activeEffects.has('timeDisplacement')) applyTimeDisplacement(imageData);
+      if (activeEffects.has('pixelSort')) applyPixelSort(imageData);
+      if (activeEffects.has('compressionArtifacts')) applyCompressionArtifacts(imageData);
+      if (activeEffects.has('glitchWalk')) applyGlitchWalk(imageData);
+      if (activeEffects.has('interlace')) applyInterlace(imageData);
+      if (activeEffects.has('phosphor')) applyPhosphorBurn(imageData);
+      if (activeEffects.has('analogDrift')) applyAnalogDrift(imageData);
+      if (activeEffects.has('vhsTracking')) applyVHSTracking(imageData);
+      if (activeEffects.has('digitalTear')) applyDigitalTear(imageData);
+      if (activeEffects.has('acidWash')) applyAcidWash(imageData);
+      if (activeEffects.has('plasmaWave')) applyPlasmaWave(imageData);
+      if (activeEffects.has('bitrot')) applyBitrot(imageData);
+      if (activeEffects.has('frequencyShift')) applyFrequencyShift(imageData);
+      if (activeEffects.has('analogBleed')) applyAnalogBleed(imageData);
+      if (activeEffects.has('timeStretch')) applyTimeStretch(imageData);
+      if (activeEffects.has('digitalSmear')) applyDigitalSmear(imageData);
+      if (activeEffects.has('quantumGlitch')) applyQuantumGlitch(imageData);
+      if (activeEffects.has('fractalNoise')) applyFractalNoise(imageData);
+      if (activeEffects.has('signalBleed')) applySignalBleed(imageData);
+      if (activeEffects.has('memoryLeak')) applyMemoryLeak(imageData);
+      applyBrightness(imageData);
+      ctx.putImageData(imageData, 0, 0);
+    }
+  }
+  requestAnimationFrame(processFrame);
+}
+
+function applyRGBSplit(imageData) {
+  const data = imageData.data;
+  const dataCopy = new Uint8ClampedArray(data);
+  for (let i = 0; i < data.length; i += 4) {
+    data[i] = dataCopy[i + 4] || dataCopy[i];
+    data[i + 2] = dataCopy[i - 4] || dataCopy[i + 2];
+  }
+}
+
+function applyNoise(imageData) {
+  const data = imageData.data;
+  for (let i = 0; i < data.length; i += 8) {
+    const noise = Math.random() * 50;
+    data[i] = data[i] + noise;
+    data[i + 1] = data[i + 1] + noise;
+    data[i + 2] = data[i + 2] + noise;
+  }
+}
+
+function applyScanlines(imageData) {
+  const data = imageData.data;
+  for (let i = 0; i < data.length; i += 4) {
+    const y = Math.floor(i / 4 / canvas.width);
+    if (y % 2 === 0) {
+      data[i] *= 0.5;
+      data[i + 1] *= 0.5;
+      data[i + 2] *= 0.5;
+    }
+  }
+}
+
+function applyPixelate(imageData) {
+  const pixelSize = 8;
+  const width = canvas.width;
+  const height = canvas.height;
+  const data = imageData.data;
+  for (let y = 0; y < height; y += pixelSize) {
+    for (let x = 0; x < width; x += pixelSize) {
+      const idx = (y * width + x) * 4;
+      const r = data[idx];
+      const g = data[idx + 1];
+      const b = data[idx + 2];
+      for (let py = y; py < Math.min(y + pixelSize, height); py++) {
+        for (let px = x; px < Math.min(x + pixelSize, width); px++) {
+          const pidx = (py * width + px) * 4;
+          data[pidx] = r;
+          data[pidx + 1] = g;
+          data[pidx + 2] = b;
+        }
+      }
+    }
+  }
+}
+
+function applyVideoCrush(imageData) {
+  const data = imageData.data;
+  const width = canvas.width;
+  const height = canvas.height;
+  const crushAmount = 0.8;
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      if (Math.random() < crushAmount) {
+        const shiftX = Math.floor(Math.random() * 10) - 5;
+        const shiftY = Math.floor(Math.random() * 10) - 5;
+        const sourceIdx = (Math.min(Math.max(y + shiftY, 0), height - 1) * width + Math.min(Math.max(x + shiftX, 0), width - 1)) * 4;
+        data[idx] = data[sourceIdx];
+        data[idx + 1] = data[sourceIdx + 1];
+        data[idx + 2] = data[sourceIdx + 2];
+        if (Math.random() < 0.5) {
+          data[idx] = Math.floor(data[idx] / 32) * 32;
+          data[idx + 1] = Math.floor(data[idx + 1] / 32) * 32;
+          data[idx + 2] = Math.floor(data[idx + 2] / 32) * 32;
+        }
+      }
+    }
+  }
+}
+
+function applyPixelShuffle(imageData) {
+  const data = imageData.data;
+  const width = canvas.width;
+  const height = canvas.height;
+  const blockSize = 8;
+  const blocks = [];
+  for (let y = 0; y < height; y += blockSize) {
+    for (let x = 0; x < width; x += blockSize) {
+      blocks.push({
+        x,
+        y
+      });
+    }
+  }
+  for (let i = blocks.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = blocks[i];
+    blocks[i] = blocks[j];
+    blocks[j] = temp;
+  }
+  const tempData = new Uint8ClampedArray(data);
+  blocks.forEach((block, i) => {
+    const targetBlock = blocks[(i + 1) % blocks.length];
+    for (let y = 0; y < blockSize && block.y + y < height; y++) {
+      for (let x = 0; x < blockSize && block.x + x < width; x++) {
+        const sourceIdx = ((block.y + y) * width + block.x + x) * 4;
+        const targetIdx = ((targetBlock.y + y) * width + targetBlock.x + x) * 4;
+        
+        data[targetIdx] = tempData[sourceIdx];
+        data[targetIdx + 1] = tempData[sourceIdx + 1];
+        data[targetIdx + 2] = tempData[sourceIdx + 2];
+        data[targetIdx + 3] = tempData[sourceIdx + 3];
+      }
+    }
+  });
+}
+
+function applyRainbow(imageData) {
+  const data = imageData.data;
+  const width = canvas.width;
+  const height = canvas.height;
+  const time = Date.now() * 0.001;
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      const hue = (x / width * 360 + time * 50) % 360;
+      const [r, g, b] = hslToRgb(hue / 360, 0.5, 0.5);
+      data[idx] = (data[idx] + r) / 2;
+      data[idx + 1] = (data[idx + 1] + g) / 2;
+      data[idx + 2] = (data[idx + 2] + b) / 2;
+    }
+  }
+}
+
+function applyInvert(imageData) {
+  const data = imageData.data;
+  for (let i = 0; i < data.length; i += 4) {
+    data[i] = 255 - data[i];
+    data[i + 1] = 255 - data[i + 1];
+    data[i + 2] = 255 - data[i + 2];
+  }
+}
+
+function hslToRgb(h, s, l) {
+  let r, g, b;
+  if (s === 0) {
+    r = g = b = l;
+  } else {
+    const hue2rgb = (p, q, t) => {
+      if (t < 0) t += 1;
+      if (t > 1) t -= 1;
+      if (t < 1 / 6) return p + (q - p) * 6 * t;
+      if (t < 1 / 2) return q;
+      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+      return p;
+    };
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    const p = 2 * l - q;
+    r = hue2rgb(p, q, h + 1 / 3);
+    g = hue2rgb(p, q, h);
+    b = hue2rgb(p, q, h - 1 / 3);
+  }
+  return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+}
+
+function applyDesaturate(imageData) {
+  const data = imageData.data;
+  for (let i = 0; i < data.length; i += 4) {
+    const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+    data[i] = avg;
+    data[i + 1] = avg;
+    data[i + 2] = avg;
+  }
+}
+
+function applyContrast(imageData) {
+  const data = imageData.data;
+  const factor = 2.5;
+  const intercept = 128 * (1 - factor);
+  for (let i = 0; i < data.length; i += 4) {
+    data[i] = factor * data[i] + intercept;
+    data[i + 1] = factor * data[i + 1] + intercept;
+    data[i + 2] = factor * data[i + 2] + intercept;
+  }
+}
+
+function applyRowShift(imageData) {
+  const data = imageData.data;
+  const width = canvas.width;
+  const height = canvas.height;
+  const tempData = new Uint8ClampedArray(data);
+  for (let y = 0; y < height; y++) {
+    const rowPosition = 1 - y / height;
+    const shift = Math.round(rowShiftAmount / 100 * width * rowPosition);
+    for (let x = 0; x < width; x++) {
+      const sourceX = (x + shift + width) % width;
+      const idx = (y * width + x) * 4;
+      const sourceIdx = (y * width + sourceX) * 4;
+      data[idx] = tempData[sourceIdx];
+      data[idx + 1] = tempData[sourceIdx + 1];
+      data[idx + 2] = tempData[sourceIdx + 2];
+      data[idx + 3] = tempData[sourceIdx + 3];
+    }
+  }
+}
+
+function applyDisplayShift(imageData) {
+  const data = imageData.data;
+  const width = canvas.width;
+  const height = canvas.height;
+  const tempData = new Uint8ClampedArray(data);
+  const shift = Math.round(displayShiftAmount / 100 * width);
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const sourceX = (x + shift + width) % width;
+      const idx = (y * width + x) * 4;
+      const sourceIdx = (y * width + sourceX) * 4;
+      data[idx] = tempData[sourceIdx];
+      data[idx + 1] = tempData[sourceIdx + 1];
+      data[idx + 2] = tempData[sourceIdx + 2];
+      data[idx + 3] = tempData[sourceIdx + 3];
+    }
+  }
+}
+
+function applyFrameRandomizer(imageData) {
+  if (frameBuffer.length === 0) return;
+  const randomFrameIndex = Math.floor(Math.random() * frameBuffer.length);
+  const randomFrame = frameBuffer[randomFrameIndex];
+  const data = imageData.data;
+  const randomData = randomFrame.data;
+  for (let i = 0; i < data.length; i += 4) {
+    if (Math.random() < 0.3) {
+      data[i] = randomData[i];
+      data[i + 1] = randomData[i + 1];
+      data[i + 2] = randomData[i + 2];
+      data[i + 3] = randomData[i + 3];
+    }
+  }
+}
+
+function applyLagEffect(imageData) {
+  frameSkipCounter++;
+  if (!lastFrameBuffer) {
+    lastFrameBuffer = new Uint8ClampedArray(imageData.data);
+  }
+  if (Math.random() < 0.1) {
+    lagIntensity = Math.floor(Math.random() * 20) + 5;
+  }
+  if (lagIntensity > 0) {
+    imageData.data.set(lastFrameBuffer);
+    lagIntensity--;
+  } else {
+    lastFrameBuffer.set(imageData.data);
+  }
+  if (frameSkipCounter % 30 === 0 && Math.random() < 0.3) {
+    imageData.data.set(lastFrameBuffer);
+  }
+}
+
+function applyMotionTrail(imageData) {
+  if (!previousFrame) {
+    previousFrame = new ImageData(
+      new Uint8ClampedArray(imageData.data),
+      imageData.width,
+      imageData.height
+    );
+    return;
+  }
+  motionTrailFrames.unshift(new ImageData(
+    new Uint8ClampedArray(imageData.data),
+    imageData.width,
+    imageData.height
+  ));
+  if (motionTrailFrames.length > TRAIL_LENGTH) {
+    motionTrailFrames.pop();
+  }
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+
+  for (let i = 0; i < motionTrailFrames.length; i++) {
+    const trailFrame = motionTrailFrames[i];
+    const opacity = 1 - (i / TRAIL_LENGTH);
+
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const idx = (y * width + x) * 4;
+        const diff = Math.abs(data[idx] - trailFrame.data[idx]) +
+                    Math.abs(data[idx + 1] - trailFrame.data[idx + 1]) +
+                    Math.abs(data[idx + 2] - trailFrame.data[idx + 2]);
+        if (diff > 30) {
+          data[idx] = data[idx] * (1 - opacity) + trailFrame.data[idx] * opacity;
+          data[idx + 1] = data[idx + 1] * (1 - opacity) + trailFrame.data[idx + 1] * opacity;
+          data[idx + 2] = data[idx + 2] * (1 - opacity) + trailFrame.data[idx + 2] * opacity;
+        }
+      }
+    }
+  }
+
+  previousFrame = new ImageData(
+    new Uint8ClampedArray(imageData.data),
+    imageData.width,
+    imageData.height
+  );
+}
+
+function toggleEffect(effectName, button) {
+  if (activeEffects.has(effectName)) {
+    activeEffects.delete(effectName);
+    button.classList.remove('active');
+  } else {
+    activeEffects.add(effectName);
+    button.classList.add('active');
+  }
+}
+
+function generateStaticNoise(amount) {
+  const bufferSize = audioContext.sampleRate;
+  const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) {
+    data[i] = (Math.random() * 2 - 1) * (amount / 100);
+  }
+  const noiseSource = audioContext.createBufferSource();
+  noiseSource.buffer = buffer;
+  noiseSource.loop = true;
+  noiseSource.connect(staticNode);
+  noiseSource.start();
+  return noiseSource;
+}
+
+document.getElementById('distortion').addEventListener('input', e => {
+  const amount = parseInt(e.target.value);
+  distortionNode.curve = makeDistortionCurve(amount);
+});
+
+document.getElementById('amplification').value = 100;
+document.getElementById('amplification').addEventListener('input', e => {
+  const amount = parseInt(e.target.value);
+  gainNode.gain.value = amount / 100 * 2;
+});
+
+document.getElementById('basstreble').addEventListener('input', e => {
+  const amount = parseInt(e.target.value);
+  const boost = amount / 100 * 30 - 15;
+  bassTrebleNode.gain.value = boost;
+  trebleNode.gain.value = boost;
+});
+
+document.getElementById('shuffle').addEventListener('click', e => toggleEffect('shuffle', e.target));
+document.getElementById('rgbSplit').addEventListener('click', e => toggleEffect('rgbSplit', e.target));
+document.getElementById('noise').addEventListener('click', e => toggleEffect('noise', e.target));
+document.getElementById('scanlines').addEventListener('click', e => toggleEffect('scanlines', e.target));
+document.getElementById('pixelate').addEventListener('click', e => toggleEffect('pixelate', e.target));
+document.getElementById('videoCrush').addEventListener('click', e => toggleEffect('videoCrush', e.target));
+document.getElementById('rainbow').addEventListener('click', e => toggleEffect('rainbow', e.target));
+document.getElementById('invert').addEventListener('click', e => toggleEffect('invert', e.target));
+document.getElementById('desaturate').addEventListener('click', e => toggleEffect('desaturate', e.target));
+document.getElementById('contrast').addEventListener('click', e => toggleEffect('contrast', e.target));
+document.getElementById('rowShift').addEventListener('input', e => {
+  rowShiftAmount = parseInt(e.target.value);
+});
+document.getElementById('displayShift').addEventListener('input', e => {
+  displayShiftAmount = parseInt(e.target.value);
+});
+document.getElementById('frameRandomizer').addEventListener('click', e => toggleEffect('frameRandomizer', e.target));
+document.getElementById('static').addEventListener('input', e => {
+  const amount = parseInt(e.target.value);
+  if (currentNoise) {
+    currentNoise.stop();
+    currentNoise = null;
+  }
+  if (amount > 0) {
+    currentNoise = generateStaticNoise(amount);
+  }
+});
+document.getElementById('lag').addEventListener('click', e => toggleEffect('lag', e.target));
+document.getElementById('motionTrail').addEventListener('click', e => toggleEffect('motionTrail', e.target));
+document.getElementById('redTint').addEventListener('click', e => toggleEffect('redTint', e.target));
+
+function applyRedTint(imageData) {
+  const data = imageData.data;
+  for (let i = 0; i < data.length; i += 4) {
+    data[i] = Math.min(255, data[i] * 1.5);      // Red channel
+    data[i + 1] *= 0.5;                          // Green channel
+    data[i + 2] *= 0.5;                          // Blue channel
+  }
+}
+
+document.getElementById('audioReverse').addEventListener('click', reverseAudio);
+
+function applyBrightness(imageData) {
+  const data = imageData.data;
+  const brightnessValue = parseInt(document.getElementById('brightness').value);
+  const adjustment = 255 * (brightnessValue / 100);
+  for (let i = 0; i < data.length; i += 4) {
+    data[i] = Math.min(255, Math.max(0, data[i] + adjustment));
+    data[i + 1] = Math.min(255, Math.max(0, data[i + 1] + adjustment));
+    data[i + 2] = Math.min(255, Math.max(0, data[i + 2] + adjustment));
+  }
+}
+
+function makeDistortionCurve(amount) {
+  const samples = 44100;
+  const curve = new Float32Array(samples);
+  const deg = Math.PI / 180;
+  for (let i = 0; i < samples; ++i) {
+    const x = i * 2 / samples - 1;
+    curve[i] = (3 + amount) * x * 20 * deg / (Math.PI + amount * Math.abs(x));
+  }
+  return curve;
+}
+
+async function reverseAudio() {
+  if (!audioContext || !source) return;
+  if (!audioBuffer) {
+    const response = await fetch(video.src);
+    const arrayBuffer = await response.arrayBuffer();
+    audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+  }
+  const reversedBuffer = audioContext.createBuffer(
+    audioBuffer.numberOfChannels,
+    audioBuffer.length,
+    audioBuffer.sampleRate
+  );
+  for (let channel = 0; channel < audioBuffer.numberOfChannels; channel++) {
+    const channelData = audioBuffer.getChannelData(channel);
+    const reversedData = reversedBuffer.getChannelData(channel);
+    for (let i = 0; i < channelData.length; i++) {
+      reversedData[i] = channelData[channelData.length - 1 - i];
+    }
+  }
+  source.disconnect();
+  const newSource = audioContext.createBufferSource();
+  newSource.buffer = audioReversed ? audioBuffer : reversedBuffer;
+  newSource.connect(distortionNode);
+  newSource.start();
+  source = newSource;
+  
+  audioReversed = !audioReversed;
+}
+
+function applyVideoStatic(imageData) {
+  const data = imageData.data;
+  const amount = staticAmount / 100;
+  
+  for (let i = 0; i < data.length; i += 4) {
+    if (Math.random() < amount) {
+      const noise = Math.random() * 255;
+      data[i] = noise;     // R
+      data[i + 1] = noise; // G
+      data[i + 2] = noise; // B
+    }
+  }
+}
+
+document.getElementById('videoStatic').addEventListener('click', e => toggleEffect('videoStatic', e.target));
+document.getElementById('staticAmount').addEventListener('input', e => {
+  staticAmount = parseInt(e.target.value);
+});
+
+function applySignalCorruption(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  for (let i = 0; i < 10; i++) {
+    const blockHeight = Math.random() * 50;
+    const startY = Math.floor(Math.random() * height);
+    const shift = Math.floor(Math.random() * 100) - 50;
+    
+    for (let y = startY; y < Math.min(startY + blockHeight, height); y++) {
+      for (let x = 0; x < width; x++) {
+        const sourceX = (x + shift + width) % width;
+        const idx = (y * width + x) * 4;
+        const sourceIdx = (y * width + sourceX) * 4;
+        if (Math.random() < 0.5) {
+          data[idx] = data[sourceIdx + (Math.floor(Math.random() * 3) * 1)];
+          data[idx + 1] = data[sourceIdx + (Math.floor(Math.random() * 3) * 1)];
+          data[idx + 2] = data[sourceIdx + (Math.floor(Math.random() * 3) * 1)];
+        }
+      }
+    }
+  }
+}
+
+function applyDataMosh(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  for (let i = 0; i < 5; i++) {
+    const blockSize = Math.random() * 50 + 20;
+    const x = Math.floor(Math.random() * (width - blockSize));
+    const y = Math.floor(Math.random() * (height - blockSize));
+    const offsetX = Math.floor(Math.random() * 100) - 50;
+    const offsetY = Math.floor(Math.random() * 100) - 50;
+    
+    for (let by = 0; by < blockSize; by++) {
+      for (let bx = 0; bx < blockSize; bx++) {
+        const sourceX = Math.min(Math.max(x + bx + offsetX, 0), width - 1);
+        const sourceY = Math.min(Math.max(y + by + offsetY, 0), height - 1);
+        const targetX = x + bx;
+        const targetY = y + by;
+        
+        if (targetX < width && targetY < height) {
+          const sourceIdx = (sourceY * width + sourceX) * 4;
+          const targetIdx = (targetY * width + targetX) * 4;
+          data[targetIdx] = data[sourceIdx];
+          data[targetIdx + 1] = data[sourceIdx + 1];
+          data[targetIdx + 2] = data[sourceIdx + 2];
+        }
+      }
+    }
+  }
+}
+
+function applyBlocksGlitch(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  
+  const blockSize = 20;
+  const numBlocks = 10;
+  
+  for (let i = 0; i < numBlocks; i++) {
+    const x = Math.floor(Math.random() * (width - blockSize));
+    const y = Math.floor(Math.random() * (height - blockSize));
+    const shiftX = Math.floor(Math.random() * 50) - 25;
+    const shiftY = Math.floor(Math.random() * 50) - 25;
+    
+    for (let by = 0; by < blockSize; by++) {
+      for (let bx = 0; bx < blockSize; bx++) {
+        const sourceX = x + bx;
+        const sourceY = y + by;
+        const targetX = Math.min(Math.max(x + bx + shiftX, 0), width - 1);
+        const targetY = Math.min(Math.max(y + by + shiftY, 0), height - 1);
+        
+        const sourceIdx = (sourceY * width + sourceX) * 4;
+        const targetIdx = (targetY * width + targetX) * 4;
+        data[targetIdx] = data[sourceIdx] * (Math.random() * 0.5 + 0.5);
+        data[targetIdx + 1] = data[sourceIdx + 1] * (Math.random() * 0.5 + 0.5);
+        data[targetIdx + 2] = data[sourceIdx + 2] * (Math.random() * 0.5 + 0.5);
+      }
+    }
+  }
+}
+
+function applyTearingEffect(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  
+  const numTears = Math.floor(Math.random() * 5) + 3;
+  const tearHeight = Math.floor(height / numTears);
+  
+  for (let i = 0; i < numTears; i++) {
+    const y = Math.floor(Math.random() * (height - tearHeight));
+    const shift = Math.floor(Math.random() * width * 0.3) * (Math.random() < 0.5 ? 1 : -1);
+    
+    for (let ty = y; ty < y + tearHeight; ty++) {
+      for (let x = 0; x < width; x++) {
+        const sourceX = (x + shift + width) % width;
+        const idx = (ty * width + x) * 4;
+        const sourceIdx = (ty * width + sourceX) * 4;
+        
+        data[idx] = data[sourceIdx];
+        data[idx + 1] = data[sourceIdx + 1];
+        data[idx + 2] = data[sourceIdx + 2];
+      }
+    }
+  }
+}
+
+function applyColorShift(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  
+  const rShift = Math.floor(Math.random() * 50) - 25;
+  const gShift = Math.floor(Math.random() * 50) - 25;
+  const bShift = Math.floor(Math.random() * 50) - 25;
+  
+  const tempData = new Uint8ClampedArray(data);
+  
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      const rIdx = ((y + rShift + height) % height * width + (x + rShift + width) % width) * 4;
+      const gIdx = ((y + gShift + height) % height * width + (x + gShift + width) % width) * 4;
+      const bIdx = ((y + bShift + height) % height * width + (x + bShift + width) % width) * 4;
+      
+      data[idx] = tempData[rIdx];
+      data[idx + 1] = tempData[gIdx + 1];
+      data[idx + 2] = tempData[bIdx + 2];
+    }
+  }
+}
+
+function applyGhosting(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  
+  const numGhosts = 3;
+  const ghostOpacity = 0.3;
+  
+  const tempData = new Uint8ClampedArray(data);
+  
+  for (let i = 1; i <= numGhosts; i++) {
+    const offsetX = Math.floor(Math.random() * 20) - 10;
+    const offsetY = Math.floor(Math.random() * 20) - 10;
+    
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const targetX = Math.min(Math.max(x + offsetX * i, 0), width - 1);
+        const targetY = Math.min(Math.max(y + offsetY * i, 0), height - 1);
+        
+        const idx = (y * width + x) * 4;
+        const targetIdx = (targetY * width + targetX) * 4;
+        
+        data[idx] = data[idx] * (1 - ghostOpacity) + tempData[targetIdx] * ghostOpacity;
+        data[idx + 1] = data[idx + 1] * (1 - ghostOpacity) + tempData[targetIdx + 1] * ghostOpacity;
+        data[idx + 2] = data[idx + 2] * (1 - ghostOpacity) + tempData[targetIdx + 2] * ghostOpacity;
+      }
+    }
+  }
+}
+
+function applyChromaticAberration(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  
+  const rOffset = 5;
+  const bOffset = -5;
+  
+  const tempData = new Uint8ClampedArray(data);
+  
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      const rIdx = (y * width + Math.min(Math.max(x + rOffset, 0), width - 1)) * 4;
+      const bIdx = (y * width + Math.min(Math.max(x + bOffset, 0), width - 1)) * 4;
+      
+      data[idx] = tempData[rIdx];
+      data[idx + 1] = tempData[idx + 1];
+      data[idx + 2] = tempData[bIdx + 2];
+    }
+  }
+}
+
+function applyWaveformDistortion(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  for (let y = 0; y < height; y++) {
+    const wave = Math.sin(y * 0.1 + time) * 20;
+    for (let x = 0; x < width; x++) {
+      const sourceX = Math.floor(x + wave) % width;
+      const idx = (y * width + x) * 4;
+      const sourceIdx = (y * width + sourceX) * 4;
+      
+      data[idx] = data[sourceIdx];
+      data[idx + 1] = data[sourceIdx + 1];
+      data[idx + 2] = data[sourceIdx + 2];
+    }
+  }
+}
+
+function applyMirrorGlitch(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const mirrorPoints = Math.floor(Math.random() * 3) + 2;
+  
+  for (let i = 0; i < mirrorPoints; i++) {
+    const mirrorY = Math.floor(Math.random() * height);
+    const direction = Math.random() < 0.5 ? 1 : -1;
+    
+    for (let y = 0; y < height/4; y++) {
+      const sourceY = (mirrorY + y * direction + height) % height;
+      const targetY = (mirrorY - y * direction + height) % height;
+      
+      for (let x = 0; x < width; x++) {
+        const sourceIdx = (sourceY * width + x) * 4;
+        const targetIdx = (targetY * width + x) * 4;
+        
+        if (Math.random() < 0.8) {
+          data[targetIdx] = data[sourceIdx];
+          data[targetIdx + 1] = data[sourceIdx + 1];
+          data[targetIdx + 2] = data[sourceIdx + 2];
+        }
+      }
+    }
+  }
+}
+
+function applyTimeDisplacement(imageData) {
+  if (frameBuffer.length < 2) return;
+  
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const slices = 10;
+  const sliceHeight = height / slices;
+  
+  for (let i = 0; i < slices; i++) {
+    const frameIndex = Math.floor(Math.random() * frameBuffer.length);
+    const pastFrame = frameBuffer[frameIndex];
+    
+    const startY = Math.floor(i * sliceHeight);
+    const endY = Math.floor((i + 1) * sliceHeight);
+    
+    for (let y = startY; y < endY; y++) {
+      for (let x = 0; x < width; x++) {
+        const idx = (y * width + x) * 4;
+        if (Math.random() < 0.7) {
+          data[idx] = pastFrame.data[idx];
+          data[idx + 1] = pastFrame.data[idx + 1];
+          data[idx + 2] = pastFrame.data[idx + 2];
+        }
+      }
+    }
+  }
+}
+
+function applyPixelSort(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const numSegments = Math.floor(Math.random() * 5) + 3;
+  for (let i = 0; i < numSegments; i++) {
+    const startY = Math.floor(Math.random() * (height - 50));
+    const segmentHeight = Math.floor(Math.random() * 50) + 20;
+    const pixels = [];
+    for (let y = startY; y < startY + segmentHeight && y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const idx = (y * width + x) * 4;
+        const brightness = (data[idx] + data[idx + 1] + data[idx + 2]) / 3;
+        pixels.push({idx, brightness, color: [data[idx], data[idx + 1], data[idx + 2]]});
+      }
+    }
+    pixels.sort((a, b) => a.brightness - b.brightness);
+    pixels.forEach((pixel, index) => {
+      const targetIdx = (Math.floor(index / width) + startY) * width * 4 + (index % width) * 4;
+      data[targetIdx] = pixel.color[0];
+      data[targetIdx + 1] = pixel.color[1];
+      data[targetIdx + 2] = pixel.color[2];
+    });
+  }
+}
+
+function applyCompressionArtifacts(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  
+  const blockSize = 8;
+  
+  for (let y = 0; y < height; y += blockSize) {
+    for (let x = 0; x < width; x += blockSize) {
+      if (Math.random() < 0.3) {
+        let rSum = 0, gSum = 0, bSum = 0;
+        let count = 0;
+        
+        for (let by = 0; by < blockSize && y + by < height; by++) {
+          for (let bx = 0; bx < blockSize && x + bx < width; bx++) {
+            const idx = ((y + by) * width + (x + bx)) * 4;
+            rSum += data[idx];
+            gSum += data[idx + 1];
+            bSum += data[idx + 2];
+            count++;
+          }
+        }
+        
+        const rAvg = rSum / count;
+        const gAvg = gSum / count;
+        const bAvg = bSum / count;
+        for (let by = 0; by < blockSize && y + by < height; by++) {
+          for (let bx = 0; bx < blockSize && x + bx < width; bx++) {
+            const idx = ((y + by) * width + (x + bx)) * 4;
+            data[idx] = rAvg + (Math.random() - 0.5) * 30;
+            data[idx + 1] = gAvg + (Math.random() - 0.5) * 30;
+            data[idx + 2] = bAvg + (Math.random() - 0.5) * 30;
+          }
+        }
+      }
+    }
+  }
+}
+
+function applyGlitchWalk(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  
+  const time = Date.now() * 0.001;
+  const walkSpeed = 2;
+  
+  for (let y = 0; y < height; y++) {
+    const offset = Math.sin(y * 0.1 + time * walkSpeed) * 20;
+    const glitchProbability = Math.sin(y * 0.05 + time) * 0.5 + 0.5;
+    
+    for (let x = 0; x < width; x++) {
+      if (Math.random() < glitchProbability * 0.1) {
+        const sourceX = (x + Math.floor(offset) + width) % width;
+        const idx = (y * width + x) * 4;
+        const sourceIdx = (y * width + sourceX) * 4;
+        data[idx] = data[sourceIdx] * (1 + Math.random() * 0.5);
+        data[idx + 1] = data[sourceIdx + 1] * (1 + Math.random() * 0.5);
+        data[idx + 2] = data[sourceIdx + 2] * (1 + Math.random() * 0.5);
+      }
+    }
+  }
+}
+
+function applyInterlace(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  
+  const scanlineHeight = 2;
+  const time = Date.now() * 0.001;
+  
+  for (let y = 0; y < height; y++) {
+    if ((y + Math.floor(time * 20)) % (scanlineHeight * 2) < scanlineHeight) {
+      const offset = Math.sin(y * 0.1 + time) * 10;
+      
+      for (let x = 0; x < width; x++) {
+        const sourceX = Math.floor(x + offset + width) % width;
+        const idx = (y * width + x) * 4;
+        const sourceIdx = (y * width + sourceX) * 4;
+        data[idx] = data[sourceIdx] * 1.2;
+        data[idx + 1] = data[sourceIdx + 1] * 0.8;
+        data[idx + 2] = data[sourceIdx + 2] * 0.8;
+      }
+    }
+  }
+}
+
+function applyPhosphorBurn(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  if (!window.phosphorBuffer) {
+    window.phosphorBuffer = new Uint8ClampedArray(data);
+  }
+  
+  const decay = 0.95;
+  for (let i = 0; i < data.length; i += 4) {
+    window.phosphorBuffer[i] = Math.max(data[i], window.phosphorBuffer[i] * decay);
+    window.phosphorBuffer[i + 1] = Math.max(data[i + 1], window.phosphorBuffer[i + 1] * decay);
+    window.phosphorBuffer[i + 2] = Math.max(data[i + 2], window.phosphorBuffer[i + 2] * decay);
+    data[i] = window.phosphorBuffer[i];
+    data[i + 1] = window.phosphorBuffer[i + 1];
+    data[i + 2] = window.phosphorBuffer[i + 2];
+  }
+}
+
+function applyAnalogDrift(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  for (let y = 0; y < height; y++) {
+    const drift = Math.sin(y * 0.05 + time) * 10;
+    const wave = Math.sin(time * 2 + y * 0.1) * 5;
+    
+    for (let x = 0; x < width; x++) {
+      const sourceX = Math.floor(x + drift + wave) % width;
+      const idx = (y * width + x) * 4;
+      const sourceIdx = (y * width + sourceX) * 4;
+      
+      data[idx] = data[sourceIdx];
+      data[idx + 1] = data[sourceIdx + 1];
+      data[idx + 2] = data[sourceIdx + 2];
+    }
+  }
+}
+
+function applyVHSTracking(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  const trackingOffset = Math.sin(time) * 20;
+  
+  for (let y = 0; y < height; y++) {
+    if (Math.random() < 0.05) {
+      const trackingHeight = Math.random() * 10;
+      const offset = Math.random() * 20 - 10 + trackingOffset;
+      
+      for (let ty = y; ty < Math.min(y + trackingHeight, height); ty++) {
+        for (let x = 0; x < width; x++) {
+          const sourceX = (x + Math.floor(offset)) % width;
+          const idx = (ty * width + x) * 4;
+          const sourceIdx = (ty * width + sourceX) * 4;
+          
+          data[idx] = data[sourceIdx] * 0.8;
+          data[idx + 1] = data[sourceIdx + 1] * 0.8;
+          data[idx + 2] = data[sourceIdx + 2] * 0.8;
+        }
+      }
+    }
+  }
+}
+
+function applyDigitalTear(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  
+  const tears = Math.floor(Math.random() * 5) + 3;
+  
+  for (let i = 0; i < tears; i++) {
+    const y = Math.floor(Math.random() * height);
+    const tearHeight = Math.floor(Math.random() * 30) + 10;
+    const offset = Math.floor(Math.random() * width * 0.5);
+    
+    for (let ty = y; ty < Math.min(y + tearHeight, height); ty++) {
+      for (let x = 0; x < width; x++) {
+        const sourceX = (x + offset) % width;
+        const idx = (ty * width + x) * 4;
+        const sourceIdx = (ty * width + sourceX) * 4;
+        
+        if (Math.random() < 0.9) {
+          data[idx] = data[sourceIdx];
+          data[idx + 1] = data[sourceIdx + 1];
+          data[idx + 2] = data[sourceIdx + 2];
+        }
+      }
+    }
+  }
+}
+
+function applyAcidWash(imageData) {
+  const data = imageData.data;
+  const time = Date.now() * 0.001;
+  
+  for (let i = 0; i < data.length; i += 4) {
+    const shift = Math.sin(time + i * 0.0001) * 100;
+    data[i] = data[i] * Math.sin(shift * 0.1);
+    data[i + 1] = data[i + 1] * Math.cos(shift * 0.1);
+    data[i + 2] = data[i + 2] * Math.tan(shift * 0.1);
+  }
+}
+
+function applyPlasmaWave(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      const plasma = Math.sin(x * 0.01 + time) + Math.sin(y * 0.01 + time) +
+                    Math.sin((x + y) * 0.01 + time) + Math.sin(Math.sqrt(x * x + y * y) * 0.01);
+      
+      data[idx] *= 0.5 + plasma * 0.5;
+      data[idx + 1] *= 0.5 + plasma * 0.5;
+      data[idx + 2] *= 0.5 + plasma * 0.5;
+    }
+  }
+}
+
+function applyBitrot(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  
+  const corruptionPoints = Math.floor(Math.random() * 10) + 5;
+  
+  for (let i = 0; i < corruptionPoints; i++) {
+    const x = Math.floor(Math.random() * width);
+    const y = Math.floor(Math.random() * height);
+    const radius = Math.floor(Math.random() * 50) + 10;
+    
+    for (let cy = -radius; cy < radius; cy++) {
+      for (let cx = -radius; cx < radius; cx++) {
+        if (cx * cx + cy * cy < radius * radius) {
+          const targetX = x + cx;
+          const targetY = y + cy;
+          
+          if (targetX >= 0 && targetX < width && targetY >= 0 && targetY < height) {
+            const idx = (targetY * width + targetX) * 4;
+            const bit = Math.floor(Math.random() * 8);
+            data[idx] ^= (1 << bit);
+            data[idx + 1] ^= (1 << bit);
+            data[idx + 2] ^= (1 << bit);
+          }
+        }
+      }
+    }
+  }
+}
+
+function applyFrequencyShift(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  for (let y = 0; y < height; y++) {
+    const frequency = Math.sin(y * 0.1 + time) * 10;
+    const amplitude = Math.cos(time) * 20;
+    
+    for (let x = 0; x < width; x++) {
+      const shift = Math.sin(x * frequency * 0.01) * amplitude;
+      const sourceY = Math.floor(y + shift + height) % height;
+      
+      const idx = (y * width + x) * 4;
+      const sourceIdx = (sourceY * width + x) * 4;
+      
+      data[idx] = data[sourceIdx];
+      data[idx + 1] = data[sourceIdx + 1];
+      data[idx + 2] = data[sourceIdx + 2];
+    }
+  }
+}
+
+function applyAnalogBleed(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  
+  for (let i = 0; i < data.length; i += 4) {
+    const x = (i / 4) % width;
+    const bleedAmount = Math.sin(x * 0.1) * 20;
+    
+    data[i] = data[i] + bleedAmount;
+    data[i + 1] = Math.max(0, data[i + 1] - bleedAmount);
+    data[i + 2] = data[i + 2] + bleedAmount;
+  }
+}
+
+function applyTimeStretch(imageData) {
+  if (frameBuffer.length < 2) return;
+  
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  for (let y = 0; y < height; y++) {
+    const frameOffset = Math.floor(Math.sin(y * 0.01 + time) * frameBuffer.length);
+    const pastFrame = frameBuffer[(frameBuffer.length + frameOffset) % frameBuffer.length];
+    
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      if (Math.random() < 0.5) {
+        data[idx] = pastFrame.data[idx];
+        data[idx + 1] = pastFrame.data[idx + 1];
+        data[idx + 2] = pastFrame.data[idx + 2];
+      }
+    }
+  }
+}
+
+function applyDigitalSmear(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  
+  for (let y = 0; y < height; y++) {
+    if (Math.random() < 0.1) {
+      let smearLength = Math.floor(Math.random() * width * 0.3);
+      let smearStart = Math.floor(Math.random() * (width - smearLength));
+      
+      for (let x = smearStart; x < smearStart + smearLength; x++) {
+        const sourceIdx = (y * width + smearStart) * 4;
+        const targetIdx = (y * width + x) * 4;
+        
+        data[targetIdx] = data[sourceIdx];
+        data[targetIdx + 1] = data[sourceIdx + 1];
+        data[targetIdx + 2] = data[sourceIdx + 2];
+      }
+    }
+  }
+}
+
+function applyQuantumGlitch(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  for (let y = 0; y < height; y++) {
+    if (Math.random() < 0.05) {
+      const quantum = Math.random() * 2 * Math.PI;
+      const amplitude = Math.sin(time + quantum) * 30;
+      
+      for (let x = 0; x < width; x++) {
+        const idx = (y * width + x) * 4;
+        const shift = Math.sin(x * 0.01 + quantum) * amplitude;
+        
+        data[idx] = data[idx] * (1 + Math.cos(shift));
+        data[idx + 1] = data[idx + 1] * (1 + Math.sin(shift));
+        data[idx + 2] = data[idx + 2] * (1 + Math.tan(shift));
+      }
+    }
+  }
+}
+
+function applyFractalNoise(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  const time = Date.now() * 0.001;
+  
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+      const fractal = Math.sin(x * y * 0.0001 + time) * 
+                     Math.cos(x * 0.01 + time) * 
+                     Math.sin(y * 0.01 + time);
+      
+      data[idx] += fractal * 50;
+      data[idx + 1] += fractal * 50;
+      data[idx + 2] += fractal * 50;
+    }
+  }
+}
+
+function applySignalBleed(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  
+  for (let y = 0; y < height; y++) {
+    const bleedDistance = Math.random() * 20;
+    const direction = Math.random() < 0.5 ? 1 : -1;
+    
+    for (let x = 0; x < width; x++) {
+      const sourceX = (x + bleedDistance * direction + width) % width;
+      const idx = (y * width + x) * 4;
+      const sourceIdx = (y * width + sourceX) * 4;
+      
+      if (Math.random() < 0.5) {
+        data[idx] = (data[idx] + data[sourceIdx]) / 2;
+        data[idx + 1] = (data[idx + 1] + data[sourceIdx + 1]) / 2;
+        data[idx + 2] = (data[idx + 2] + data[sourceIdx + 2]) / 2;
+      }
+    }
+  }
+}
+function applyMemoryLeak(imageData) {
+  const data = imageData.data;
+  const width = imageData.width;
+  const height = imageData.height;
+  if (!window.memoryLeakBuffer) {
+    window.memoryLeakBuffer = new Uint8ClampedArray(data);
+  }
+  for (let i = 0; i < data.length; i += 4) {
+    if (Math.random() < 0.01) {
+      window.memoryLeakBuffer[i] = data[i];
+      window.memoryLeakBuffer[i + 1] = data[i + 1];
+      window.memoryLeakBuffer[i + 2] = data[i + 2];
+    }
+    if (Math.random() < 0.1) {
+      data[i] = window.memoryLeakBuffer[i];
+      data[i + 1] = window.memoryLeakBuffer[i + 1];
+      data[i + 2] = window.memoryLeakBuffer[i + 2];
+    }
+  }
+}
+document.getElementById('phosphor').addEventListener('click', e => toggleEffect('phosphor', e.target));
+document.getElementById('analogDrift').addEventListener('click', e => toggleEffect('analogDrift', e.target));
+document.getElementById('vhsTracking').addEventListener('click', e => toggleEffect('vhsTracking', e.target));
+document.getElementById('digitalTear').addEventListener('click', e => toggleEffect('digitalTear', e.target));
+document.getElementById('acidWash').addEventListener('click', e => toggleEffect('acidWash', e.target));
+document.getElementById('plasmaWave').addEventListener('click', e => toggleEffect('plasmaWave', e.target));
+document.getElementById('bitrot').addEventListener('click', e => toggleEffect('bitrot', e.target));
+document.getElementById('frequencyShift').addEventListener('click', e => toggleEffect('frequencyShift', e.target));
+document.getElementById('analogBleed').addEventListener('click', e => toggleEffect('analogBleed', e.target));
+document.getElementById('timeStretch').addEventListener('click', e => toggleEffect('timeStretch', e.target));
+document.getElementById('digitalSmear').addEventListener('click', e => toggleEffect('digitalSmear', e.target));
+document.getElementById('quantumGlitch').addEventListener('click', e => toggleEffect('quantumGlitch', e.target));
+document.getElementById('fractalNoise').addEventListener('click', e => toggleEffect('fractalNoise', e.target));
+document.getElementById('signalBleed').addEventListener('click', e => toggleEffect('signalBleed', e.target));
+document.getElementById('memoryLeak').addEventListener('click', e => toggleEffect('memoryLeak', e.target));
+document.getElementById('waveform').addEventListener('click', e => toggleEffect('waveform', e.target));
+document.getElementById('mirrorGlitch').addEventListener('click', e => toggleEffect('mirrorGlitch', e.target));
+document.getElementById('timeDisplacement').addEventListener('click', e => toggleEffect('timeDisplacement', e.target));
+document.getElementById('pixelSort').addEventListener('click', e => toggleEffect('pixelSort', e.target));
+document.getElementById('compressionArtifacts').addEventListener('click', e => toggleEffect('compressionArtifacts', e.target));
+document.getElementById('glitchWalk').addEventListener('click', e => toggleEffect('glitchWalk', e.target));
+document.getElementById('interlace').addEventListener('click', e => toggleEffect('interlace', e.target));
+document.getElementById('signalCorruption').addEventListener('click', e => toggleEffect('signalCorruption', e.target));
+document.getElementById('dataMosh').addEventListener('click', e => toggleEffect('dataMosh', e.target));
+document.getElementById('blocksGlitch').addEventListener('click', e => toggleEffect('blocksGlitch', e.target));
+document.getElementById('tearingEffect').addEventListener('click', e => toggleEffect('tearingEffect', e.target));
+document.getElementById('colorShift').addEventListener('click', e => toggleEffect('colorShift', e.target));
+document.getElementById('ghosting').addEventListener('click', e => toggleEffect('ghosting', e.target));
+document.getElementById('chromaticAberration').addEventListener('click', e => toggleEffect('chromaticAberration', e.target));
+const recordButton = document.getElementById('recordButton');
+const downloadSourceButton = document.getElementById('downloadSourceButton');
+const downloadModal = document.getElementById('downloadModal');
+const sourceVideo = document.getElementById('sourceVideo');
+const closeSourceModal = document.getElementById('closeSourceModal');
+let mediaRecorder = null;
+let recordedChunks = [];
+recordButton.addEventListener('click', () => {
+  if (!video) {
+    alert('Please select a video first');
+    return;
+  }
+  if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+    mediaRecorder.stop();
+    return;
+  }
+  const stream = canvas.captureStream(30);
+  const audioDestination = audioContext.createMediaStreamDestination();
+  source.connect(audioDestination);
+  const combinedStream = new MediaStream([
+    ...stream.getTracks(),
+    ...audioDestination.stream.getTracks()
+  ]);
+  mediaRecorder = new MediaRecorder(combinedStream, {
+    mimeType: 'video/mp4'
+  });
+  recordedChunks = [];
+  mediaRecorder.ondataavailable = (event) => {
+    if (event.data.size > 0) {
+      recordedChunks.push(event.data);
+    }
+  };
+  mediaRecorder.onstop = () => {
+    const blob = new Blob(recordedChunks, { type: 'video/mp4' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'glitched_video.mp4';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+  recordButton.textContent = 'Stop Recording';
+  recordButton.classList.add('active');
+  mediaRecorder.start();
+});
+downloadSourceButton.addEventListener('click', () => {
+  if (!video || !video.src) {
+    alert('Please select a video first');
+    return;
+  }
+  canvas.toBlob(function(blob) {
+    const url = URL.createObjectURL(blob);
+    sourceVideo.src = url;
+    sourceVideo.controls = true;
+    downloadModal.style.display = 'block';
+    const downloadBtn = document.createElement('button');
+    downloadBtn.textContent = 'Download Glitched Video';
+    downloadBtn.style.marginTop = '10px';
+    downloadBtn.addEventListener('click', () => {
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'glitched_video.webm';
+      a.click();
+    });
+    const downloadControls = document.querySelector('.download-controls');
+    const existingDownloadBtn = downloadControls.querySelector('button:not(#closeSourceModal)');
+    if (existingDownloadBtn) {
+      existingDownloadBtn.remove();
+    }
+    downloadControls.appendChild(downloadBtn);
+  }, 'video/webm');
+});
+downloadModal.addEventListener('click', (event) => {
+  if (event.target === downloadModal) {
+    downloadModal.style.display = 'none';
+    sourceVideo.src = '';
+  }
+});
+</script>
+</body>
+</html>
