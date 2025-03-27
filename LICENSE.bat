@@ -7,12 +7,13 @@ pause
 cls
 color 04
 echo You are free to:
-echo Share — copy and redistribute the material in any medium or format for any purpose, even commercially.
-echo Adapt — remix, transform, and build upon the material for any purpose, even commercially.
+echo Share - copy and redistribute the material in any medium or format for any purpose, even commercially.
+echo Adapt - remix, transform, and build upon the material for any purpose, even commercially.
 echo The licensor cannot revoke these freedoms as long as you follow the license terms.
 echo Under the following terms:
-echo Attribution — You must give appropriate credit , provide a link to the license, and indicate if changes were made . You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
-echo No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+echo Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made.
+echo You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+echo No additional restrictions - You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
 pause
 cls
 exit
